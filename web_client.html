@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+  <title>Discworld MUD on DecafMUD Client</title>
+  <link rel="stylesheet" type="text/css" href="css/main.css" />
+  <link rel="stylesheet" type="text/css" href="css/mud-colors.css" />
+  <link rel="stylesheet" type="text/css" href="css/decafmud.css" />
+  <link rel="stylesheet" type="text/css" href="css/decafmud-dark.css" />
+  <script src="js/disc.settings.js" type="text/javascript"></script>
+  <script src="js/dragelement.js" type="text/javascript"></script>
+  <script src="js/disc.menu.js" type="text/javascript"></script>
+  <script src="js/disc.macro.js" type="text/javascript"></script>
+  <script src="js/disc.zmp.js" type="text/javascript"></script>
+  <script src="js/decafmud.js" type="text/javascript"></script>
+  <script src="js/decafmud.encoding.cp437.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    var decaf, el, timer;
+
+    var srs = document.location.search;
+    srs = srs.substr(1).split('&');
+    var test=null;
+	
+    var sock = 'WebSocket' in window ? 'websocket' : 'flash';
+    var path = 'menu';
+    var full = true;
+    var address = 'discworld.starturtle.net';
+	
+    for(var si in srs) {
+      var sr = srs[si];
+      if (typeof sr !== 'string') { continue; }
+      if ( sr.toLowerCase() === 'fullscreen' ) { full = true; }
+      else if ( sr.toLowerCase().substr(0,7) === 'socket=' && sr.length > 7 ) {
+        sock = sr.substr(7);
+      }
+      else if ( sr.toLowerCase().substr(0,5) === 'test=' && sr.length > 5 ) {
+        test = sr.substr(5);
+      }
+      else if ( sr.toLowerCase().substr(0,5) === 'path=' && sr.length > 5 ) {
+        path = sr.substr(5);
+      }
+      if (sr == 'ipv4') {
+        address = '82.68.167.69';
+      }
+      if (sr == 'ipv6') {
+        address = '2a01:348:19e:2::2';
+      }
+    }
+
+    window.onload = function() {
+      // Get an element for display
+      var my_element = document.querySelector('#mud');
+      el = document.querySelector('#test-results')
+	
+      var options = {
+        set_interface : {
+          container : my_element,
+          start_full : full,
+        },
+        set_socket : {
+          wspath : path,
+          wsport : 4243,
+        },
+        host : address,
+        port : 4242,
+        autoreconnect: false,
+        socket	 : sock,
+        plugins : ['telopt.zmp']
+      };
+	
+      decaf = new DecafMUD(options);
+      timer = setTimeout(checkTest, 50);
+    };
+	
+    var req = new XMLHttpRequest();
+	
+    function checkTest() {
+      clearTimeout(timer);
+      if ( decaf.loaded !== true ) {
+        // Wait longer.
+	timer = setTimeout(checkTest, 50);
+	return;
+      }
+    }	
+  </script>
+</head>
+<body>
+<div id="top"></div>
+
+<div id="content">
+  <div id="mud" role="application" class="fullscreen"></div>
+  <br /><br />	
+</div>
+
+<div id="foot-cont">
+  <span>&nbsp;</span>
+  <div id="foot">
+	Copyright &copy; 2010 Stendec
+  </div>
+  <div style="clear:both"></div>
+  <div id="debug"></div>
+</div>
+
+<div id="bugexplanation">
+<h2>Loading client...</h2>
+
+<p>The client offered on this page is built using javascript and
+  either websockets or (as a fallback if websockets are not
+  enabled) flash.  It may not work on some (mostly older) browsers,
+  such as Internet Explorer 7 and below.
+</p>
+
+<p>If the client doesn't load, first try reloading the page.  If it
+  still doesn't work, you can try enabling javascript (as well as
+  flash), or use a different browser.  Alternatively, use the
+  <a href="http://discworld.atuin.net/external/java/newtelnet/java_client.shtml">Java Client</a>,
+  plain telnet, or download a more complete mud client elsewhere (for
+  example 
+  <a href="http://sourceforge.net/projects/coldbeer/files/">Coldbeer</a>,
+  a client developed for Discworld).  To connect to discworld on
+  another client (or telnet), just connect to discworld.starturtle.net
+  on port 4242 (or 23).
+</p>
+</div>
+
+</body>
+</html>
