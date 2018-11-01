@@ -1,5 +1,7 @@
-# DecafMUD
+# DecafMUD for the Discworld
 
-Web-based MUD Client for the [Discworld MUD](http://discworld.atuin.net/lpc/)
+> The Web-based MUD Client for the [Discworld MUD](http://discworld.atuin.net/lpc/)
 
-This version of DecafMUD will depart from the [original](http://decafmud.stendec.me/) [version](https://github.com/stendec/DecafMUD) in that it will be designed soley to support the [Discworld MUD](http://discworld.atuin.net/lpc/), and no other MUDs or applications. If the codebase departs significantly enough, we will change the name of the client in the future, so as to not besmerch the name of the original creator.
+This MUD client started life as [version 0.9.0](https://github.com/stendec/DecafMUD) of Stendec's wonderful [DecafMUD](http://decafmud.stendec.me/. Much credit and thanks go to Stendec for the client.
+
+Going forward, this particular client will be entirely devoted to the Discworld MUD. There will be no attempt at general support for all MUDs. The goal here is to provide the best possible client for the Disc, and that's all.
