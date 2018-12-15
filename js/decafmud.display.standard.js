@@ -50,11 +50,25 @@ var Display = function(decaf, ui, disp) {
 	this.ui			= ui;
 	this._display	= disp;
 	
-	// Create an element for the display.
+	// Create an element for the main display
 	this.display	= document.createElement('div');
-        this.display.id = 'mud-display';
+	this.display.id = 'mud-display';
 	this.display.className = 'decafmud display ' + this.decaf.options.set_display.fgclass + '7';
+	//this.display.className += " right-col";
 	this._display.appendChild(this.display);
+	
+	// Create an element for the (optional chat log window)
+	this.chatlog	= document.createElement('div');
+	this.chatlog.id = 'chatlog';
+	this.chatlog.className = 'decafmud display ' + this.decaf.options.set_display.fgclass + '7';
+	this._display.appendChild(this.chatlog);
+
+	// Testing the new div
+	//document.getElementById("chatlog").className += " left-col";
+	document.getElementById("chatlog").setAttribute("hidden", "");
+	
+	//document.getElementById("chatlog").className += " three-quarter-height";
+	//document.getElementById("chatlog").removeAttribute("hidden");
 	
 	// Attach the scroll event.
 	var d = this;
@@ -78,9 +92,13 @@ var Display = function(decaf, ui, disp) {
 	
 	// Clear the display, initializing the default state as well.
 	this.clear();
+
+	// Display an opening line in the chat log
+	this.chatlog.innerHTML = '';
+	this.chat_message('<br>test test<br>')
 	
 	// Display the DecafMUD banner.
-	this.message('<br><a href="http://decafmud.kicks-ass.net">DecafMUD</a> v' + DecafMUD.version + ' by Stendec &lt;<a href="mailto:stendec365@gmail.com">stendec365@gmail.com</a>&gt;<br>');
+	this.message('<br><a href="https://github.com/theJollySin/DecafMUD">DecafMUD</a> v' + DecafMUD.version + '<br>');
 	if ( this.splash.length > 0 ) {
 		this.message(this.splash + '<br>'); }
 };
@@ -434,11 +452,32 @@ Display.prototype.message = function(text, className, needLine) {
 	this.doScroll();
 }
 
+/** Append a message to the chat logs. This is always displayed on a new
+ *  line with a special class to allow for highlighting.
+ * @param {String} text	  The text to chatlog.
+ * @param {String} className The class name for the message's container.
+ * @param {boolean} needLine If this is false, the message won't be forced onto
+ *	a new line. */
+Display.prototype.chat_message = function(text, className, needLine) {
+	if ( className === undefined ) { className = 'message'; }
+	var span = document.createElement('span');
+	if ( this.needline && ( needLine !== false ) ) { span.innerHTML = '<br>'; }
+	this.needline = false;
+	span.innerHTML += text + '<br>';
+	this.shouldScroll();
+	this.chatlog.appendChild(span);
+	this.doScroll();
+}
+
 /** Determine if we should be scrolling to the bottom of the output, and do so
     after a short delay if we should. Otherwise, display an element letting the
 	user know they have have content to read if they scroll down. */
 Display.prototype.shouldScroll = function(addTarget) {
-	if ( this.willScroll !== undefined || this._display.style.overflowY === 'hidden' ) { return; }
+	//if ( this._display.style.overflowY === 'hidden' ) { 
+	if ( this.willScroll !== undefined || this._display.style.overflowY === 'hidden' ) { 
+	//	console.log('NOPE to SCROLLING');
+	//	console.log(this._display.style.overflowY);
+		return; }
 	this.willScroll = this._display.scrollTop >= (this._display.scrollHeight - this._display.offsetHeight);
 	
 	// If we aren't scrolling, and the element isn't there, add our scroll helper.

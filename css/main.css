@@ -323,3 +323,20 @@ ul.spaced li {
   margin-bottom: 30px;
 }
 
+.left-col {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 75%;
+    overflow: auto;
+}
+
+.right-col {
+    position: absolute;
+    left: 25%;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    overflow-y: auto;
+}
