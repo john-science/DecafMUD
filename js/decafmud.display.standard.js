@@ -6,6 +6,27 @@
  * Licensed under the MIT license.
  */
 
+
+// Let's support older versions of ECMAScript that don't have array.filter()
+if (!Array.prototype.filter) {
+  Array.prototype.filter = function(fun) {
+    var len = this.length >>> 0;
+    if (typeof fun != "function")
+    throw new TypeError();
+
+    var res = [];
+    var thisp = arguments[1];
+    for (var i = 0; i < len; i++) {
+      if (i in this) {
+        var val = this[i];
+        if (fun.call(thisp, val, i, this))
+        res.push(val);
+      }
+    }
+    return res;
+  };
+}
+
 /**
  * @fileOverview DecafMUD Display Provider: Standard
  * @author Stendec <stendec365@gmail.com>
@@ -52,17 +73,20 @@ var Display = function(decaf, ui, disp) {
 	
 	// Create an element for the display.
 	this.display	= document.createElement('div');
-        this.display.id = 'mud-display';
+	this.display.id = 'mud-display';
 	this.display.className = 'decafmud display ' + this.decaf.options.set_display.fgclass + '7';
 	this._display.appendChild(this.display);
 	
+	// words to be highlighted
+	this.words2h = [];
+
 	// Attach the scroll event.
 	var d = this;
 	addEvent(this._display, 'scroll', function(e){d.onScroll()});
 	
 	// Attach an event for detecting middle-clicks.
 	addEvent(this._display, 'mousedown', function(e){
-                if ( e.which == 1 && open_menu !== -1 ) { close_menus(); }
+		if ( e.which == 1 && open_menu !== -1 ) { close_menus(); }
 		if ( e.which !== 2 || !d.decaf.store.get('ui/middle-click-scroll',false) ) { return; }
 		d.scroll();
 		if ( e.cancelBubble ) { e.cancelBubble = true; }
@@ -173,6 +197,36 @@ Display.prototype.getSize = function() {
 	return [ Math.floor(tw/w) + 1, Math.floor(th/h) ];
 };
 
+///////////////////////////////////////////////////////////////////////////////
+// Word Highlighting Functionality
+///////////////////////////////////////////////////////////////////////////////
+
+/** If the user enters certain HTML words to be highlighted, it will break the
+HTML of the displayed page. So we need to cleanup what they give us. */
+Display.prototype.cleanWords = function() {
+	this.words2h = this.words2h.filter(function(el) {
+		return el.length > 2;
+	});
+	this.words2h = this.words2h.filter(function(el) {
+		return ["<", ">", "nbsp", "spa", "span", "ass", "lass", "class"].indexOf(el) === -1;
+	});
+
+	for (i = 0; i < this.words2h.length; i++) {
+		this.words2h[i] = this.words2h[i].toUpperCase();
+	}
+};
+
+/** Wrap any highlightable words in custom CSS.
+ @param {String} data The data to be displayed. */
+Display.prototype.handleHighlighting = function(data) {
+	this.cleanWords();	// TODO: This should be called on user input instead.
+
+  	for (i = 0; i < this.words2h.length; i++) {
+		data = data.replace(new RegExp(this.words2h[i], 'gi'), '<span class="hl">' + this.words2h[i] + '</span>');
+	}
+	return data;
+};
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Data Processing
@@ -184,7 +238,7 @@ Display.prototype.handleData = function(data) {
 	// Add this to the buffer, and process it.
 	this.inbuf.push(data);
 	this.processData();
-}
+};
 
 Display.prototype.processData = function() {
 	// If we don't have any data, quit.
@@ -233,8 +287,8 @@ Display.prototype.processData = function() {
 		data = out;
 	}
 	
-	// Push the output buffer to the display.
-	var data = this.outbuf.join('');
+	// Push the output buffer to the display, first handle any highlighting that is needed
+	var data = this.handleHighlighting(this.outbuf.join(''));
 	this.outbuf = [];
 	this.outColor(false);
 	
@@ -244,10 +298,13 @@ Display.prototype.processData = function() {
 	this._display.setAttribute('aria-busy',true);
 	
 	var span = document.createElement('span');
+
 	span.innerHTML = data.replace(/\n/g,'<br>').replace(/> /g,'>&nbsp;').replace(/ ( +)/g, function(m) { if (m.length ===2){return ' &nbsp;';} return ' ' + new Array(m.length-1).join('&nbsp;') + ' '; });
 	this.shouldScroll();
 	this.display.appendChild(span);
 	this.doScroll();
+	console.log('Standard process data');
+	console.log(data);
 	
 	//clearTimeout(this.scrollTime);
 	//var d=this;this.scrollTime = setTimeout(function(){

@@ -67,20 +67,20 @@ var SimpleInterface = function(decaf) {
 	this.el_display.setAttribute('role', 'log');
 	this.el_display.setAttribute('tabIndex','0');
 	this.container.appendChild(this.el_display);
-        
-        // Make the sidebar
-        this.sidebar = document.createElement('div');
-        this.sidebar.className = 'decafmud mud-pane side-pane';
-        this.sidebar.setAttribute('tabIndex', '1');
-        this.container.appendChild(this.sidebar);
-        this.progresstable = document.createElement('table');
-        this.progresstable.style.display = 'none';
-        this.sidebar.appendChild(this.progresstable);
-        this.progressbars = new Array();
-        this.mapdiv = document.createElement('div');
-        this.mapdiv.style.display = 'none';
-        this.sidebar.appendChild(this.mapdiv);
-        
+		
+		// Make the sidebar
+		this.sidebar = document.createElement('div');
+		this.sidebar.className = 'decafmud mud-pane side-pane';
+		this.sidebar.setAttribute('tabIndex', '1');
+		this.container.appendChild(this.sidebar);
+		this.progresstable = document.createElement('table');
+		this.progresstable.style.display = 'none';
+		this.sidebar.appendChild(this.progresstable);
+		this.progressbars = new Array();
+		this.mapdiv = document.createElement('div');
+		this.mapdiv.style.display = 'none';
+		this.sidebar.appendChild(this.mapdiv);
+		
 	// Handle keypresses in scrollback.
 	addEvent(this.el_display,'keydown',function(e){si.displayKey(e)});
 	addEvent(this.sidebar,'keydown',function(e){si.displayKey(e)});
@@ -110,7 +110,7 @@ var SimpleInterface = function(decaf) {
 	
 	// Make the input element.
 	this.input = document.createElement('input');
-        this.input.id = "inputelement";
+	this.input.id = "inputelement";
 	this.input.title = "MUD Input".tr(this.decaf);
 	this.input.type = 'text';
 	this.input.className = 'decafmud input';
@@ -124,12 +124,12 @@ var SimpleInterface = function(decaf) {
 	addEvent(this.input, 'blur', helper);
 	addEvent(this.input, 'focus', helper);
 
-        // remember a limited history; historyPosition is -1 unless
-        // the user is browsing through history (so the moment the
-        // input field changes, historyposition oes back to 0
-        this.history = [];
-        this.historyPosition = -1;
-        for (i = 0; i < 100; i++) this.history[i] = '';
+		// remember a limited history; historyPosition is -1 unless
+		// the user is browsing through history (so the moment the
+		// input field changes, historyposition oes back to 0
+		this.history = [];
+		this.historyPosition = -1;
+		for (i = 0; i < 100; i++) this.history[i] = '';
 
 	// Reset the interface state.
 	this.reset();
@@ -137,8 +137,8 @@ var SimpleInterface = function(decaf) {
 	// Listen to window resizing
 	addEvent(window,'resize',function() { si.resizeScreen(); });
 
-        // Make sure the input is focussed
-        this.input.focus();
+		// Make sure the input is focussed
+		this.input.focus();
 	
 	return this;
 };
@@ -166,6 +166,7 @@ SimpleInterface.supports = {
 	'editor'        : false,
 	'splash'        : true
 };
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Splash Functionality
@@ -354,32 +355,32 @@ SimpleInterface.prototype.connected = function() {
 SimpleInterface.prototype.connecting = function() {
   this.print_msg("Trying to connect...");
   if (this.decaf.options.socket == "websocket") {
-    this.display.message("<span>You are connecting using <i>websockets</i> " +
-      "on port " + this.decaf.options.set_socket.wsport + ".  If this does " +
-      "not work (for example because the port is blocked or you have an " +
-      "older version of websockets), you can connecting with flash.  To do " +
-      "so, open <a href=\"web_client.html?socket=flash\">the flash version</a> " +
-      "instead.</span>");
+	this.display.message("<span>You are connecting using <i>websockets</i> " +
+	  "on port " + this.decaf.options.set_socket.wsport + ".  If this does " +
+	  "not work (for example because the port is blocked or you have an " +
+	  "older version of websockets), you can connecting with flash.  To do " +
+	  "so, open <a href=\"web_client.html?socket=flash\">the flash version</a> " +
+	  "instead.</span>");
   }
   else {
-    this.display.message("<span>You are connecting using <i>flash</i> " +
-      "on port " + this.decaf.options.port + ".  To connect using " +
-      "websockets, make sure you have an up-to-date browser which " + 
-      "supports this, and open " +
-      "<a href=\"web_client.html?socket=websocket\">the websocket version</a> " +
-      "instead.</span>");
+	this.display.message("<span>You are connecting using <i>flash</i> " +
+	  "on port " + this.decaf.options.port + ".  To connect using " +
+	  "websockets, make sure you have an up-to-date browser which " + 
+	  "supports this, and open " +
+	  "<a href=\"web_client.html?socket=websocket\">the websocket version</a> " +
+	  "instead.</span>");
   }
   this.updateIcon(this.ico_connected,
-                  "DecafMUD is attempting to connect.".tr(this.decaf),
-                  '', 'connectivity connecting');
+				  "DecafMUD is attempting to connect.".tr(this.decaf),
+				  '', 'connectivity connecting');
 }
 
 /** Called by Decaf upon disconnection to let us know. */
 SimpleInterface.prototype.disconnected = function() {
   this.print_msg("Connection closed.");
   this.updateIcon(this.ico_connected,
-                  "DecafMUD is currently not connected.".tr(this.decaf),
-                  '', 'connectivity disconnected');
+				  "DecafMUD is currently not connected.".tr(this.decaf),
+				  '', 'connectivity disconnected');
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -431,25 +432,28 @@ SimpleInterface.prototype.setup = function() {
 	// Create the display.
 	this.decaf.debugString('Initializing display plugin "'+display+'" in: #' + this.el_display.id,'info');
 	this.display = new DecafMUD.plugins.Display[display](this.decaf, this, this.el_display);
-        this.display.id = 'mud-display';
+	this.display.id = 'mud-display';
 	this.decaf.display = this.display;
 
-        // Make the menu
-        var menus = get_menus();
-        for (i = 0; i < menus.length; i+=3) {
-          this.tbNew(
-            menus[i],
-            menus[i+1].tr(this.decaf),
-            undefined,
-            undefined,
-//            menus[i+2].tr(this.decaf),
-            1,
-            true,
-            false,
-            undefined,
-            function(i) {return function(e) {toggle_menu(i/3);}} (i)
-          );
-        }
+	// TODO: TESTING the highlighting feature
+	this.display.words2h = [];
+
+	// Make the menu
+	var menus = get_menus();
+	for (i = 0; i < menus.length; i+=3) {
+		this.tbNew(
+			menus[i],
+			menus[i+1].tr(this.decaf),
+			undefined,
+			undefined,
+//			menus[i+2].tr(this.decaf),
+			1,
+			true,
+			false,
+			undefined,
+			function(i) {return function(e) {toggle_menu(i/3);}} (i)
+		);
+	}
 
 	// Create the connected notification icon.
 	this.ico_connected = this.addIcon("You are currently disconnected.".tr(this.decaf), '', 'connectivity disconnected');
@@ -656,7 +660,7 @@ SimpleInterface.prototype.tbNew = function(btnid,text,icon,tooltip,type,enabled,
 	var ind = ( ++this.toolbutton_id );
 	
 	var btn = document.createElement('span');//document.createElement('a');
-        btn.id = btnid;
+		btn.id = btnid;
 	btn.className = 'decafmud button toolbar-button';
 	if ( clss ) { btn.className += ' ' + clss; }
 	if ( type === 1 ) { btn.className += ' toggle ' + (pressed ? 'toggle-pressed' : 'toggle-depressed'); }
@@ -720,19 +724,19 @@ SimpleInterface.prototype.tbNew = function(btnid,text,icon,tooltip,type,enabled,
 SimpleInterface.prototype.toolbarPadding = undefined;
 SimpleInterface.prototype._resizeToolbar = function() {
   var always = true,
-      css = this.toolbar.style.cssText,
-      ret = false;
+	  css = this.toolbar.style.cssText,
+	  ret = false;
 
   // make sure the display leaves enough space for the toolbar
   if ( this.display && this.toolbarPadding !== this.toolbar.clientHeight ) {
-    this.display.shouldScroll();
-    this.el_display.style.paddingTop = this.toolbar.clientHeight + 'px';
-    this.toolbarPadding = this.toolbar.clientHeight;
-    this.resizeScreen(false,true);
-    this.display.doScroll();
-    ret = true;
+	this.display.shouldScroll();
+	this.el_display.style.paddingTop = this.toolbar.clientHeight + 'px';
+	this.toolbarPadding = this.toolbar.clientHeight;
+	this.resizeScreen(false,true);
+	this.display.doScroll();
+	ret = true;
   } else {
-    this.toolbarPadding = this.toolbar.clientHeight;
+	this.toolbarPadding = this.toolbar.clientHeight;
   }
 
   return ret;
@@ -1203,7 +1207,7 @@ SimpleInterface.prototype.old_fs = false;
 /** Resize the screen elements to fit together nicely. */
 SimpleInterface.prototype.resizeScreen = function(showSize,force) {
 	if ( force !== true && this.old_height === this.container.offsetHeight && this.old_width === this.container.offsetWidth ) { return; }
-        this.hidePopup();  // don't bother resizing any open popups
+		this.hidePopup();  // don't bother resizing any open popups
 	this.old_height = this.container.offsetHeight;
 	this.old_width = this.container.offsetWidth;
 	
@@ -1308,19 +1312,19 @@ SimpleInterface.prototype.setProgress = function(name, percent,txt) {
   var w = 100;
 
   for (i = 0; i < this.progressbars.length; i++) {
-    if (this.progressbars[i][0] == name) {
-      this.progressbars[i][1].style.width =
-        (percent*w/100) + "px";
-      this.progressbars[i][2].innerHTML = txt;
-    }
+	if (this.progressbars[i][0] == name) {
+	  this.progressbars[i][1].style.width =
+		(percent*w/100) + "px";
+	  this.progressbars[i][2].innerHTML = txt;
+	}
   }
 }
 
 SimpleInterface.prototype.setProgressColor = function(name, col) {
   for (i = 0; i < this.progressbars.length; i++) {
-    if (this.progressbars[i][0] == name) {
-      this.progressbars[i][1].style.backgroundColor = col;
-    }
+	if (this.progressbars[i][0] == name) {
+	  this.progressbars[i][1].style.backgroundColor = col;
+	}
   }
 }
 
@@ -1414,7 +1418,7 @@ SimpleInterface.prototype.showPopup = function() {
 
   // Make sure menus are closed when the mouse clicks on us
   addEvent(this.popup, 'mousedown', function(e) {
-     if ( e.which == 1 && open_menu !== -1 ) { close_menus(); }
+	 if ( e.which == 1 && open_menu !== -1 ) { close_menus(); }
   });
 
   return this.popup;
@@ -1439,7 +1443,7 @@ SimpleInterface.prototype.createButton = function(caption, func) {
   btn.className = "prettybutton";
   btn.innerHTML = "<big>" + caption + "</big>";
   if (typeof func == 'string' || func instanceof String)
-    btn.onclick = function() { eval(func); }
+	btn.onclick = function() { eval(func); }
   else btn.onclick = func;
   return btn;
 }
@@ -1526,10 +1530,10 @@ SimpleInterface.prototype.saveInputInHistory = function() {
   // does the same text occur before in history?
   var lastid = -1;
   for (i = 0; i < this.history.length; i++) {
-    if (this.history[i] == txt) {
-      lastid = i;
-      break;
-    }
+	if (this.history[i] == txt) {
+	  lastid = i;
+	  break;
+	}
   }
   // from the last occurance, or the top if there was none, scroll up
   if (lastid == -1) lastid = this.history.length-1;
@@ -1554,10 +1558,10 @@ SimpleInterface.prototype.inputModified = function() {
 SimpleInterface.prototype.loadInput = function() {
   if (this.historyPosition == -1) this.input.value = '';
   else {
-    this.input.focus();
-      // by setting the focus at this point, the cursor position ends
-      // up at the end!
-    this.input.value = this.history[this.historyPosition];
+	this.input.focus();
+	  // by setting the focus at this point, the cursor position ends
+	  // up at the end!
+	this.input.value = this.history[this.historyPosition];
 //    this.input.select();
   }
 }
@@ -1569,7 +1573,7 @@ SimpleInterface.prototype.loadInput = function() {
 SimpleInterface.prototype.parseInput = function(inp) {
   lines = inp.split(';;');
   for (var i = 0, c = lines.length; i < c; i++) {
-    this.decaf.sendInput(lines[i]);
+	this.decaf.sendInput(lines[i]);
 //    this.displayInput(lines[i]);
   }
 }
@@ -1578,57 +1582,57 @@ SimpleInterface.prototype.parseInput = function(inp) {
 SimpleInterface.prototype.handleInput = function(e) {
   if ( e.type !== 'keydown' ) { return; }
   if ( e.keyCode === 13 ) {
-    this.parseInput(this.input.value);
-    this.saveInputInHistory();
-    this.historyPosition = 0;
-    this.input.select();
+	this.parseInput(this.input.value);
+	this.saveInputInHistory();
+	this.historyPosition = 0;
+	this.input.select();
   }
 
   // specific macro (in macro.js)
   else if ( tryMacro(e.keyCode) ) {
-    if (e.preventDefault) e.preventDefault();
-    else e.returnValue = false;
+	if (e.preventDefault) e.preventDefault();
+	else e.returnValue = false;
   }
 
   // PgUp
   else if ( e.keyCode === 33 ) {
-    if ( this.display && this.display.scrollUp ) {
-      this.display.scrollUp();
-      e.preventDefault();
-    }
+	if ( this.display && this.display.scrollUp ) {
+	  this.display.scrollUp();
+	  e.preventDefault();
+	}
   }
 
   // PgDwn
   else if ( e.keyCode === 34 ) {
-    if ( this.display && this.display.scrollDown ) {
-      this.display.scrollDown();
-      e.preventDefault();
-    }
+	if ( this.display && this.display.scrollDown ) {
+	  this.display.scrollDown();
+	  e.preventDefault();
+	}
   }
 
   // browse down
   else if ( e.keyCode == 40 ) {
-    if (this.inputModified()) this.historyPosition = -1;
-    if (this.historyPosition == -1) this.saveInputInHistory();
-    else if (this.historyPosition == 0) this.historyPosition = -1;
-    else this.historyPosition = this.historyPosition-1;
-    this.loadInput();
+	if (this.inputModified()) this.historyPosition = -1;
+	if (this.historyPosition == -1) this.saveInputInHistory();
+	else if (this.historyPosition == 0) this.historyPosition = -1;
+	else this.historyPosition = this.historyPosition-1;
+	this.loadInput();
   }
 
   // browse up
   else if ( e.keyCode == 38 ) {
-    if (this.inputModified()) this.historyPosition = -1;
-    if (this.historyPosition == -1) {
-      if (this.input.value == '') this.historyPosition = 0;
-      else {
-        this.saveInputInHistory();
-        this.historyPosition = 1;
-      }
-    }
-    else if (this.historyPosition < this.history.length-1) {
-      this.historyPosition = this.historyPosition+1;
-    }
-    this.loadInput();
+	if (this.inputModified()) this.historyPosition = -1;
+	if (this.historyPosition == -1) {
+	  if (this.input.value == '') this.historyPosition = 0;
+	  else {
+		this.saveInputInHistory();
+		this.historyPosition = 1;
+	  }
+	}
+	else if (this.historyPosition < this.history.length-1) {
+	  this.historyPosition = this.historyPosition+1;
+	}
+	this.loadInput();
   }
 
 }
@@ -1636,21 +1640,21 @@ SimpleInterface.prototype.handleInput = function(e) {
 /** Handle blur and focus events on the INPUT element. */
 SimpleInterface.prototype.handleBlur = function(e) {
   var inp = this.input,
-      bc = this.decaf.options.set_interface.blurclass;
+	  bc = this.decaf.options.set_interface.blurclass;
 	
   if ( e.type === 'blur' ) {
-    if ( inp.value === '' ) {
-      inp.className += ' ' + bc;
-    }
-    this.inpFocus = false;
+	if ( inp.value === '' ) {
+	  inp.className += ' ' + bc;
+	}
+	this.inpFocus = false;
   }
 
   else if ( e.type === 'focus' ) {
-    var parts = inp.className.split(' '), out = [];
-    for(var i=0;i<parts.length;i++) {
-      if ( parts[i] !== bc ) { out.push(parts[i]); } }
-      inp.className = out.join(' ');
-      this.inpFocus = true;
+	var parts = inp.className.split(' '), out = [];
+	for(var i=0;i<parts.length;i++) {
+	  if ( parts[i] !== bc ) { out.push(parts[i]); } }
+	  inp.className = out.join(' ');
+	  this.inpFocus = true;
   }
 }
 
@@ -1706,8 +1710,8 @@ SimpleInterface.prototype.updateInput = function(force) {
 		if ( pos ) { par.insertBefore(new_inp, pos);
 		} else { par.appendChild(new_inp); }
 		this.input = new_inp;
-                this.input.value = buffer;
-		
+		this.input.value = buffer;
+
 		// Attach an event listener for onKeyDown.
 		addEvent(new_inp, 'keydown', function(e) { si.handleInputPassword(e); });
 		
