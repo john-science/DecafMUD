@@ -6,27 +6,6 @@
  * Licensed under the MIT license.
  */
 
-
-// Let's support older versions of ECMAScript that don't have array.filter()
-if (!Array.prototype.filter) {
-  Array.prototype.filter = function(fun) {
-    var len = this.length >>> 0;
-    if (typeof fun != "function")
-    throw new TypeError();
-
-    var res = [];
-    var thisp = arguments[1];
-    for (var i = 0; i < len; i++) {
-      if (i in this) {
-        var val = this[i];
-        if (fun.call(thisp, val, i, this))
-        res.push(val);
-      }
-    }
-    return res;
-  };
-}
-
 /**
  * @fileOverview DecafMUD Display Provider: Standard
  * @author Stendec <stendec365@gmail.com>
@@ -76,9 +55,6 @@ var Display = function(decaf, ui, disp) {
 	this.display.id = 'mud-display';
 	this.display.className = 'decafmud display ' + this.decaf.options.set_display.fgclass + '7';
 	this._display.appendChild(this.display);
-	
-	// words to be highlighted
-	this.words2h = [];
 
 	// Attach the scroll event.
 	var d = this;
@@ -92,9 +68,6 @@ var Display = function(decaf, ui, disp) {
 		if ( e.cancelBubble ) { e.cancelBubble = true; }
 		e.preventDefault();
 	});
-	
-	// Store this in DecafMUD.
-	this.decaf.loaded_plugs.display = this;
 	
 	// Any HTML currently within the display is our splash text.
 	this.splash		= this.display.innerHTML;
@@ -129,6 +102,7 @@ Display.prototype.endSpace = false;
 Display.prototype.scrollTime = null;
 Display.prototype.willScroll = false;
 Display.prototype.mxp = false;
+Display.prototype.words2h = [];
 
 // Clear the display.
 Display.prototype.clear = function() {
@@ -201,28 +175,36 @@ Display.prototype.getSize = function() {
 // Word Highlighting Functionality
 ///////////////////////////////////////////////////////////////////////////////
 
+/** Just a getter for 'words to highlight' */
+Display.prototype.getWords = function() {
+	var self = this;
+	return self.words2h;
+};
+
 /** If the user enters certain HTML words to be highlighted, it will break the
 HTML of the displayed page. So we need to cleanup what they give us. */
-Display.prototype.cleanWords = function() {
-	this.words2h = this.words2h.filter(function(el) {
+Display.prototype.setWords = function(words) {
+	var self = this;
+    words = words.toUpperCase().split(/,?\s+/);
+
+	self.words2h = words.filter(function(el) {
 		return el.length > 2;
 	});
-	this.words2h = this.words2h.filter(function(el) {
-		return ["<", ">", "nbsp", "spa", "span", "ass", "lass", "class"].indexOf(el) === -1;
+	self.words2h = self.words2h.filter(function(el) {
+		return ["<", ">", "NBSP", "SPA", "SPAN", "ASS", "LASS", "CLASS"].indexOf(el) === -1;
 	});
 
-	for (i = 0; i < this.words2h.length; i++) {
-		this.words2h[i] = this.words2h[i].toUpperCase();
-	}
+	return self.words2h;
 };
 
 /** Wrap any highlightable words in custom CSS.
  @param {String} data The data to be displayed. */
 Display.prototype.handleHighlighting = function(data) {
-	this.cleanWords();	// TODO: This should be called on user input instead.
-
-  	for (i = 0; i < this.words2h.length; i++) {
-		data = data.replace(new RegExp(this.words2h[i], 'gi'), '<span class="hl">' + this.words2h[i] + '</span>');
+	var self = this;
+	console.log('handling highlighting');
+	console.log(self.words2h);
+  	for (i = 0; i < self.words2h.length; i++) {
+		data = data.replace(new RegExp(self.words2h[i], 'gi'), '<span class="hl">' + self.words2h[i] + '</span>');
 	}
 	return data;
 };
@@ -303,14 +285,6 @@ Display.prototype.processData = function() {
 	this.shouldScroll();
 	this.display.appendChild(span);
 	this.doScroll();
-	console.log('Standard process data');
-	console.log(data);
-	
-	//clearTimeout(this.scrollTime);
-	//var d=this;this.scrollTime = setTimeout(function(){
-	//	d._display.setAttribute('aria-busy',false);
-	//	d.scroll();
-	//},50);
 }
 
 /** Read an ANSI sequence from the provided data and handle it, then return the

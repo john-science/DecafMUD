@@ -435,9 +435,6 @@ SimpleInterface.prototype.setup = function() {
 	this.display.id = 'mud-display';
 	this.decaf.display = this.display;
 
-	// TODO: TESTING the highlighting feature
-	this.display.words2h = [];
-
 	// Make the menu
 	var menus = get_menus();
 	for (i = 0; i < menus.length; i+=3) {
@@ -1082,122 +1079,6 @@ SimpleInterface.prototype.oldscrollX = undefined;
 SimpleInterface.prototype.oldscrollY = undefined;
 SimpleInterface.prototype.old_children = [];
 SimpleInterface.prototype.old_display = [];
-
-/** Enter fullscreen mode. */
-/*
-SimpleInterface.prototype.enter_fs = function(showSize) {
-	if ( this.container.className.indexOf('fullscreen') !== -1 ) { return; }
-
-	var has_focus = this.inpFocus;
-	if ( this.display ) { this.display.shouldScroll(false); }
-	
-	// Scroll to it.
-	this.oldscrollY = window.scrollY;
-	this.oldscrollX = window.scrollX;
-	
-	// Store the old container position, then pop it.
-	this.old_parent = this.container.parentNode;
-	this.next_sib = this.container.nextElementSibling;
-	if ( this.next_sib === undefined ) {
-		// Try getting nextSibling for IE support
-		if ( this.container.nextSibling && this.container.nextSibling.nodeType == this.container.nodeType ) {
-			this.next_sib = this.container.nextSibling;
-		}
-	}
-	this.old_parent.removeChild(this.container);
-	
-	// Set the className so it appears all big.
-	this.container.className += ' fullscreen';
-	
-	// Adjust the fs button.
-	this.tbPressed(this.fsbutton, true);
-	this.tbTooltip(this.fsbutton, "Click to exit fullscreen mode.".tr(this.decaf));
-	
-	// Hide all the other body elements.
-	for(var i=0;i<document.body.children.length;i++) {
-		var child = document.body.children[i];
-		if ( child.id !== '_firebugConsole' && child.id.indexOf('DecafFlashSocket') !== 0 ) {
-			this.old_children.push(child);
-			this.old_display.push(child.style.display);
-			child.style.display = 'none';
-		}
-	}
-	
-	// Append the container to <body>.
-	this.old_body_over = document.body.style.overflow;
-	// Don't do in Firefox.
-	if ( !bodyHack ) { document.body.style.overflow = 'hidden'; }
-	document.body.appendChild(this.container);
-	
-	window.scroll(0,0);
-	
-	// Resize and show the size.
-	this._resizeToolbar();
-	if ( showSize !== false ) { this.showSize(); }
-	
-	// Refocus input?
-	if ( has_focus ) { this.input.focus(); }
-	if ( this.display ) { this.display.doScroll(); }
-}
-*/
-
-/** Exit fullscreen mode. */
-/*
-SimpleInterface.prototype.exit_fs = function() {
-	if ( this.old_parent === undefined ) { return; }
-	
-	var has_focus = this.inpFocus;
-	if ( this.display ) { this.display.shouldScroll(false); }
-	
-	// Pop the container from body.
-	this.container.parentNode.removeChild(this.container);
-	
-	// Restore all the body elements.
-	for(var i=0; i<this.old_children.length;i++) {
-		var child = this.old_children[i];
-		child.style.display = this.old_display[i];
-	}
-	this.old_children = [];
-	this.old_display = [];
-	
-	// Remove the fullscreen class.
-	var classes = this.container.className.split(' '),i=0;
-	while(i<classes.length){
-		if ( classes[i] === 'fullscreen' ) {
-			classes.splice(i,1);
-			continue;
-		}
-		i++;
-	}
-	this.container.className = classes.join(' ');
-	
-	// Adjust the fs button.
-	this.tbPressed(this.fsbutton, false);
-	this.tbTooltip(this.fsbutton, "Click to enter fullscreen mode.".tr(this.decaf));
-	
-	// Add the container back to the parent element.
-	if ( this.next_sib !== undefined && this.next_sib !== null ) {
-		this.old_parent.insertBefore(this.container, this.next_sib);
-	} else {
-		// Just add to the end.
-		this.old_parent.appendChild(this.container);
-	}
-	
-	// Restore the body overflow style.
-	document.body.style.overflow = this.old_body_over;
-	
-	// Return to where we were scrolled before.
-	window.scroll(this.oldscrollX, this.oldscrollY);
-	
-	// Show the size.
-	this._resizeToolbar()
-	this.showSize();
-	
-	// Refocus input?
-	if ( has_focus ) { this.input.focus(); }
-	if ( this.display ) { this.display.doScroll(); }
-}
-*/
 
 /** Store the old size. */
 SimpleInterface.prototype.old_height = -1;

@@ -41,6 +41,27 @@ if ( Array.prototype.indexOf === undefined ) {
 	}
 }
 
+
+// Let's support older versions of ECMAScript that don't have array.filter()
+if (!Array.prototype.filter) {
+  Array.prototype.filter = function(fun) {
+    var len = this.length >>> 0;
+    if (typeof fun != "function")
+    throw new TypeError();
+
+    var res = [];
+    var thisp = arguments[1];
+    for (var i = 0; i < len; i++) {
+      if (i in this) {
+        var val = this[i];
+        if (fun.call(thisp, val, i, this))
+        res.push(val);
+      }
+    }
+    return res;
+  };
+}
+
 // The obligatory, oh-so-popular wrapper function
 (function(window) {
 

@@ -16,8 +16,9 @@ var toolbar_menus = [
      'Plain Text Log', 'menu_log(\'plain\');']
   ],
   [ 'Options', 'menu_options', 'Change DecafMud Options',
-    ['Font (Size)', 'menu_font_size();',
+    ['Highlight Words', 'menu_highlight();',
      'Macros', 'menu_macros();',
+     'Font (Size)', 'menu_font_size();',
      'Flush History', 'menu_history_flush();'],
   ],
   [ 'Help', 'menu_help', 'Get help with Discworld and Client problems.',
@@ -156,18 +157,6 @@ function close_popup() {
   popup = undefined;
   popupheader = undefined;
 }
-
-/*
-function show_popup() {
-  popup = decaf.ui.showPopup();
-  popup.style.overflow = "auto";
-  return popup;
-}
-
-function close_popup() {
-  decaf.ui.hidePopup();
-}
-*/
 
 function add_element(inside, kind, innerhtml) {
   var el = document.createElement(kind);
@@ -314,6 +303,7 @@ function menu_log(style) {
 
 function menu_font_size() {
   var pop = popup_textdiv(show_popup());
+
   add_element(pop, "h2", "Change fonts.");
   var frm = document.createElement("form");
   frm.name = "formfonts";
@@ -355,6 +345,29 @@ function change_font() {
   close_popup();
   decaf.ui.display.scroll();
   decaf.ui.input.focus();
+}
+
+function menu_highlight() {
+  var pop = popup_textdiv(show_popup());
+  var words = DecafMUD.plugins.Display.standard.prototype.getWords().join(" ");
+  add_element(pop, "h2", "Enter word(s) to Highlight.");
+  var frm = document.createElement("form");
+  frm.name = "formwords";
+  pop.appendChild(frm);
+  add_element(frm, "p", "Your: "+
+    "<input name=\"wordentry\" type=\"text\" size=20 value=\"" + words + "\">");
+  add_element(frm, "p", "(Words must be longer than 2 characters, and some HTML terms are forbidden.)");
+  var savebtn = document.createElement("a");
+  savebtn.className = "fakebutton";
+  savebtn.href = "javascript:change_words();";
+  savebtn.innerHTML = "<big>Save</big>";
+  frm.appendChild(savebtn);
+}
+
+function change_words() {
+  var words = document.formwords.wordentry.value;
+  words = DecafMUD.plugins.Display.standard.prototype.setWords(words);
+  document.formwords.wordentry.value = words.join(" ");
 }
 
 function menu_macros() {
