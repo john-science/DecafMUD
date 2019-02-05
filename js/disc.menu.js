@@ -355,7 +355,7 @@ function menu_highlight() {
   frm.name = "formwords";
   pop.appendChild(frm);
   add_element(frm, "p", "Your: "+
-    "<input name=\"wordentry\" type=\"text\" size=20 value=\"" + words + "\">");
+    "<input name=\"wordentry\" type=\"text\" size=42 value=\"" + words + "\">");
   add_element(frm, "p", "(Words must be longer than 2 characters, and some HTML terms are forbidden.)");
   var savebtn = document.createElement("a");
   savebtn.className = "fakebutton";
