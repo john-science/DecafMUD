@@ -197,12 +197,16 @@ Display.prototype.setWords = function(words) {
 	return self.words2h;
 };
 
+RegExp.escape = function(s) {
+    return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+};
+
 /** Wrap any highlightable words in custom CSS.
  @param {String} data The data to be displayed. */
 Display.prototype.handleHighlighting = function(data) {
 	var self = this;
   	for (i = 0; i < self.words2h.length; i++) {
-		data = data.replace(new RegExp(self.words2h[i], 'gi'), '<span class="hl">' + self.words2h[i] + '</span>');
+		data = data.replace(new RegExp(RegExp.escape(self.words2h[i]), 'gi'), '<span class="hl">' + self.words2h[i] + '</span>');
 	}
 	return data;
 };
