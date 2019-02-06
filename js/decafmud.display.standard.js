@@ -201,8 +201,6 @@ Display.prototype.setWords = function(words) {
  @param {String} data The data to be displayed. */
 Display.prototype.handleHighlighting = function(data) {
 	var self = this;
-	console.log('handling highlighting');
-	console.log(self.words2h);
   	for (i = 0; i < self.words2h.length; i++) {
 		data = data.replace(new RegExp(self.words2h[i], 'gi'), '<span class="hl">' + self.words2h[i] + '</span>');
 	}

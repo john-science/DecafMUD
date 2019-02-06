@@ -1018,12 +1018,7 @@ DecafMUD.prototype.debugString = function(text, type, obj) {
 		case 'info':	console.info(st, this.id, text); return;
 		case 'warn':	console.warn(st, this.id, text); return;
 		case 'error':	console.error(st, this.id, text); return;
-		default: 
-			if ( 'debug' in console ) {
-				console.debug(st, this.id, text);
-				return;
-			}
-			console.log(st, this.id, text);
+		default:		console.log(st, this.id, text);
 	}
 }
 
