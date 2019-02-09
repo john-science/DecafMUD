@@ -197,6 +197,8 @@ Display.prototype.setWords = function(words) {
 	return self.words2h;
 };
 
+/** Add a tool to escape all RegEx from a string,
+essentially just leave the string alone. */
 RegExp.escape = function(s) {
     return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 };

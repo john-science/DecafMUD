@@ -16,7 +16,7 @@ var toolbar_menus = [
      'Plain Text Log', 'menu_log(\'plain\');']
   ],
   [ 'Options', 'menu_options', 'Change DecafMud Options',
-    ['Highlight Words', 'menu_highlight();',
+    ['Triggers', 'menu_triggers();',
      'Macros', 'menu_macros();',
      'Font (Size)', 'menu_font_size();',
      'Flush History', 'menu_history_flush();'],
@@ -347,10 +347,10 @@ function change_font() {
   decaf.ui.input.focus();
 }
 
-function menu_highlight() {
+function menu_triggers() {
   var pop = popup_textdiv(show_popup());
   var words = DecafMUD.plugins.Display.standard.prototype.getWords().join(" ");
-  add_element(pop, "h2", "Enter word(s) to Highlight.");
+  add_element(pop, "h2", "Enter word(s) to Trigger on.");
   var frm = document.createElement("form");
   frm.name = "formwords";
   pop.appendChild(frm);
