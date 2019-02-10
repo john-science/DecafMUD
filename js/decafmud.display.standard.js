@@ -224,7 +224,7 @@ Display.prototype.addTrigger = function(new_phrase, color) {
 Display.prototype.remove_trigger = function(word) {
 	var self = this;
 	var new_triggers = [];
-	for (i = 0; i < triggers.length; i++) {
+	for (i = 0; i < self.triggers.length; i++) {
 		if (self.triggers[i][0] !== word) {
 			new_triggers.push(self.triggers[i]);
 		}

@@ -478,6 +478,7 @@ function menu_trouble() {
 /** Just a pass through to call the class method */
 function remove_trigger(phraz) {
   DecafMUD.plugins.Display.standard.prototype.remove_trigger(phraz);
+  document.getElementById("live_triggers").innerHTML = build_trigger_list();
 }
 
 /** build the HTML-displayed list of all your current triggers */
