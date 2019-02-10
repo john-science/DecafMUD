@@ -201,7 +201,7 @@ Display.prototype.looks_like_html = function(s) {
 };
 
 /** Not a full setter, just addig a single phraz to the trigger list */
-Display.prototype.addTriggers = function(new_phrase, color) {
+Display.prototype.addTrigger = function(new_phrase, color) {
 	var self = this;
 	var add_error = "";
 

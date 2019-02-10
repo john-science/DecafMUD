@@ -498,13 +498,13 @@ function menu_trouble() {
 // Trigger Menu
 ///////////////////////////////////////////////////////////////////////////////
 
-// TODO
+/** Just a pass through to call the class method */
 function remove_trigger(phraz) {
   DecafMUD.plugins.Display.standard.prototype.remove_trigger(phraz);
 }
 
-// TODO
-function trigger_list() {
+/** build the HTML-displayed list of all your current triggers */
+function build_trigger_list() {
   var triggers = DecafMUD.plugins.Display.standard.prototype.triggers;
   var t = "";
   /** NOTE: adding in reverse order so new items are at the top */
@@ -514,7 +514,7 @@ function trigger_list() {
   return t;
 }
 
-// TODO
+/** build the HTML drop-down selector for trigger color options */
 function build_color_selector(){
   var h_colors = ["red", "orange", "yellow", "green", "blue", "purple"];
   var s = "<select id=\"colorselect\">";
@@ -531,21 +531,25 @@ function build_color_selector(){
   return s;
 }
 
-// TODO
+/** Attempt to add the new user Trigger to the list.
+Catch and display errors if need be. */
 function add_trigger() {
-  var phrase = document.formwords.wordentry.value;
-  var color = document.formwords.colorselect.value;
+  var phrase = document.formtriggers.wordentry;
+  var color = document.formtriggers.colorselect.value;
   
-  var add_error = DecafMUD.plugins.Display.standard.prototype.addTrigger(phrase, color);
+  var add_error = DecafMUD.plugins.Display.standard.prototype.addTrigger(phrase.value, color);
 
   if (add_error === "") {
-    localStorage.setItem('triggers', JSON.stringify(DecafMUD.plugins.Display.standard.prototype.triggers));
-    document.getElementById("live_triggers").innerHTML = trigger_list();
+    document.getElementById("live_triggers").innerHTML = build_trigger_list();
+  } else {
+    phrase.placeholder = add_error;
   }
+
+  phrase.value = "";
 }
 
 
-// TODO
+/** Populate the Trigger popup menu */
 function menu_triggers() {
   var pop = popup_textdiv(show_popup());
   add_element(pop, "h2", "Add your trigger word(s)");
@@ -563,5 +567,5 @@ function menu_triggers() {
   add_element(frm, "span", "<input id=\"wordentry\" type=\"text\" size=20 placeholder=\"Enter Word or Phrase\" value=\"\">" +
     build_color_selector() + "<br><br>");
 
-  add_element(frm, "span", "<ul id=\"live_triggers\">" + trigger_list() + "</ul>")
+  add_element(frm, "span", "<ul id=\"live_triggers\">" + build_trigger_list() + "</ul>")
 }
