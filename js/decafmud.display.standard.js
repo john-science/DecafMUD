@@ -102,7 +102,6 @@ Display.prototype.endSpace = false;
 Display.prototype.scrollTime = null;
 Display.prototype.willScroll = false;
 Display.prototype.mxp = false;
-Display.prototype.words2h = [];
 Display.prototype.triggers = JSON.parse(localStorage.getItem('triggers')) || [];
 
 // Clear the display.
@@ -176,28 +175,26 @@ Display.prototype.getSize = function() {
 // Trigger Functionality
 ///////////////////////////////////////////////////////////////////////////////
 
-
 /** Just a getter for trigger phrases */
 Display.prototype.getTriggers = function() {
 	var self = this;
 	return self.triggers;
 };
 
-
 /** Helper to add trigger: check that it doesn't already exist */
 Display.prototype.already_in_triggers = function(phraz) {
 	var self = this;
-  for (i=0; i < self.triggers.length; i++) {
-    if (phraz == self.triggers[i][0]) {
-      return true;
-    }
-  }
-  return false;
+	for (i=0; i < self.triggers.length; i++) {
+		if (phraz == self.triggers[i][0]) {
+			return true;
+		}
+	}
+	return false;
 };
 
 /** Helper to add trigger: Ensuring we don't stomp on HTML */
 Display.prototype.looks_like_html = function(s) {
-  return ["NBSP", "SPA", "SPAN", "ASS", "LASS", "CLASS", "HTML"].indexOf(s) > -1;
+	return ["NBSP", "SPA", "SPAN", "ASS", "LASS", "CLASS", "HTML"].indexOf(s) > -1;
 };
 
 /** Not a full setter, just addig a single phraz to the trigger list */
@@ -205,7 +202,7 @@ Display.prototype.addTrigger = function(new_phrase, color) {
 	var self = this;
 	var add_error = "";
 
-	var phrase = new_phrase.value.trim().toUpperCase();
+	var phrase = new_phrase.trim().toUpperCase();
 
 	if (phrase.length < 3) {
 		add_error = "Too Short: need length > 2";
@@ -223,7 +220,6 @@ Display.prototype.addTrigger = function(new_phrase, color) {
 	return add_error;
 };
 
-
 /** Remove a trigger from this class object and localStorage */
 Display.prototype.remove_trigger = function(word) {
 	var self = this;
@@ -237,33 +233,6 @@ Display.prototype.remove_trigger = function(word) {
 	localStorage.setItem('triggers', JSON.stringify(self.triggers));
 };
 
-
-///////////////////////////////////////////////////////////////////////////////
-// Word Highlighting Functionality
-///////////////////////////////////////////////////////////////////////////////
-
-/** Just a getter for 'words to highlight' */
-Display.prototype.getWords = function() {
-	var self = this;
-	return self.words2h;
-};
-
-/** If the user enters certain HTML words to be highlighted, it will break the
-HTML of the displayed page. So we need to cleanup what they give us. */
-Display.prototype.setWords = function(words) {
-	var self = this;
-    words = words.toUpperCase().split(/,?\s+/);
-
-	self.words2h = words.filter(function(el) {
-		return el.length > 2;
-	});
-	self.words2h = self.words2h.filter(function(el) {
-		return ["<", ">", "NBSP", "SPA", "SPAN", "ASS", "LASS", "CLASS"].indexOf(el) === -1;
-	});
-
-	return self.words2h;
-};
-
 /** Add a tool to escape all RegEx from a string,
 essentially just leave the string alone. */
 RegExp.escape = function(s) {
@@ -274,8 +243,8 @@ RegExp.escape = function(s) {
  @param {String} data The data to be displayed. */
 Display.prototype.handleHighlighting = function(data) {
 	var self = this;
-  	for (i = 0; i < self.words2h.length; i++) {
-		data = data.replace(new RegExp(RegExp.escape(self.words2h[i]), 'gi'), '<span class="hl">' + self.words2h[i] + '</span>');
+  	for (i = 0; i < self.triggers.length; i++) {
+		data = data.replace(new RegExp(RegExp.escape(self.triggers[i][0]), 'gi'), '<span class="' + self.triggers[i][1] + '">' + self.triggers[i][0] + '</span>');
 	}
 	return data;
 };

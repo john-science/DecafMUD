@@ -347,29 +347,6 @@ function change_font() {
   decaf.ui.input.focus();
 }
 
-function menu_triggers() {
-  var pop = popup_textdiv(show_popup());
-  var words = DecafMUD.plugins.Display.standard.prototype.getWords().join(" ");
-  add_element(pop, "h2", "Enter word(s) to Trigger on.");
-  var frm = document.createElement("form");
-  frm.name = "formwords";
-  pop.appendChild(frm);
-  add_element(frm, "p", "(Words must be longer than 2 characters, and some HTML terms are forbidden.)");
-  add_element(frm, "p", "* "+
-    "<input name=\"wordentry\" type=\"text\" size=20 value=\"" + words + "\">");
-  var savebtn = document.createElement("a");
-  savebtn.className = "fakebutton";
-  savebtn.href = "javascript:change_words();";
-  savebtn.innerHTML = "<big>Save</big>";
-  frm.appendChild(savebtn);
-}
-
-function change_words() {
-  var words = document.formwords.wordentry.value;
-  words = DecafMUD.plugins.Display.standard.prototype.setWords(words);
-  document.formwords.wordentry.value = words.join(" ");
-}
-
 
 function menu_macros() {
   var pop = popup_textdiv(show_popup());
@@ -509,21 +486,21 @@ function build_trigger_list() {
   var t = "";
   /** NOTE: adding in reverse order so new items are at the top */
   for (i = triggers.length - 1; i >= 0; i--) {
-    t += '<li><span style="font-weight: bold;background-color: white;color:' + triggers[i][1] + '">' + triggers[i][0] + '</span> - <a href=\'javascript:remove_trigger("' + triggers[i][0] + '")\'>remove</a></li>';
+    t += '<li><span class="' + triggers[i][1] + '">' + triggers[i][0] + '</span> - <a href=\'javascript:remove_trigger("' + triggers[i][0] + '")\'>remove</a></li>';
   }
   return t;
 }
 
 /** build the HTML drop-down selector for trigger color options */
 function build_color_selector(){
-  var h_colors = ["red", "orange", "yellow", "green", "blue", "purple"];
+  var h_colors = ["red", "orange", "orangered", "yellow", "yellowgreen", "green", "turquoise", "blue", "purple", "pink"];
   var s = "<select id=\"colorselect\">";
 
   for (i=0; i < h_colors.length; i++) {
     if (i == 0) {
-      s += '<option value="' + h_colors[i] + '" selected>' + h_colors[i] + '</option>';
+      s += '<option value="t' + i + '" selected>' + h_colors[i] + '</option>';
     } else {
-      s += '<option value="' + h_colors[i] + '">' + h_colors[i] + '</option>';
+      s += '<option value="t' + i + '">' + h_colors[i] + '</option>';
     }
   }
   
@@ -547,7 +524,6 @@ function add_trigger() {
 
   phrase.value = "";
 }
-
 
 /** Populate the Trigger popup menu */
 function menu_triggers() {
