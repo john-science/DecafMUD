@@ -103,6 +103,7 @@ Display.prototype.scrollTime = null;
 Display.prototype.willScroll = false;
 Display.prototype.mxp = false;
 Display.prototype.words2h = [];
+Display.prototype.triggers = JSON.parse(localStorage.getItem('triggers')) || [];
 
 // Clear the display.
 Display.prototype.clear = function() {
@@ -170,6 +171,72 @@ Display.prototype.getSize = function() {
 	var w = sz[0], h = sz[1];
 	return [ Math.floor(tw/w) + 1, Math.floor(th/h) ];
 };
+
+///////////////////////////////////////////////////////////////////////////////
+// Trigger Functionality
+///////////////////////////////////////////////////////////////////////////////
+
+
+/** Just a getter for trigger phrases */
+Display.prototype.getTriggers = function() {
+	var self = this;
+	return self.triggers;
+};
+
+
+/** Helper to add trigger: check that it doesn't already exist */
+Display.prototype.already_in_triggers = function(phraz) {
+	var self = this;
+  for (i=0; i < self.triggers.length; i++) {
+    if (phraz == self.triggers[i][0]) {
+      return true;
+    }
+  }
+  return false;
+};
+
+/** Helper to add trigger: Ensuring we don't stomp on HTML */
+Display.prototype.looks_like_html = function(s) {
+  return ["NBSP", "SPA", "SPAN", "ASS", "LASS", "CLASS", "HTML"].indexOf(s) > -1;
+};
+
+/** Not a full setter, just addig a single phraz to the trigger list */
+Display.prototype.addTriggers = function(new_phrase, color) {
+	var self = this;
+	var add_error = "";
+
+	var phrase = new_phrase.value.trim().toUpperCase();
+
+	if (phrase.length < 3) {
+		add_error = "Too Short: need length > 2";
+	} else if (self.already_in_triggers(phrase)) {
+		add_error = "Trigger already exists";
+	} else if (phrase.indexOf("<") > -1 || phrase.indexOf("<") > -1) {
+		add_error = "HTML codes don't work";
+	} else if (self.looks_like_html(phrase)) {
+		add_error = "HTML codes don't work";
+	} else {
+		self.triggers.push([phrase, color]);
+		localStorage.setItem('triggers', JSON.stringify(self.triggers));
+	}
+
+	return add_error;
+};
+
+
+/** Remove a trigger from this class object and localStorage */
+Display.prototype.remove_trigger = function(word) {
+	var self = this;
+	var new_triggers = [];
+	for (i = 0; i < triggers.length; i++) {
+		if (self.triggers[i][0] !== word) {
+			new_triggers.push(self.triggers[i]);
+		}
+	}
+	self.triggers = new_triggers;
+	localStorage.setItem('triggers', JSON.stringify(self.triggers));
+};
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Word Highlighting Functionality

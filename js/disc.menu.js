@@ -370,6 +370,7 @@ function change_words() {
   document.formwords.wordentry.value = words.join(" ");
 }
 
+
 function menu_macros() {
   var pop = popup_textdiv(show_popup());
 
@@ -492,3 +493,75 @@ function menu_trouble() {
   window.open("help.html", "Troubleshooting", "width=800,height=400,resizable=yes,scrollbar=yes,toolbar=yes,menubar=no,location=no,directories=no,status=no");
 }
 
+
+///////////////////////////////////////////////////////////////////////////////
+// Trigger Menu
+///////////////////////////////////////////////////////////////////////////////
+
+// TODO
+function remove_trigger(phraz) {
+  DecafMUD.plugins.Display.standard.prototype.remove_trigger(phraz);
+}
+
+// TODO
+function trigger_list() {
+  var triggers = DecafMUD.plugins.Display.standard.prototype.triggers;
+  var t = "";
+  /** NOTE: adding in reverse order so new items are at the top */
+  for (i = triggers.length - 1; i >= 0; i--) {
+    t += '<li><span style="font-weight: bold;background-color: white;color:' + triggers[i][1] + '">' + triggers[i][0] + '</span> - <a href=\'javascript:remove_trigger("' + triggers[i][0] + '")\'>remove</a></li>';
+  }
+  return t;
+}
+
+// TODO
+function build_color_selector(){
+  var h_colors = ["red", "orange", "yellow", "green", "blue", "purple"];
+  var s = "<select id=\"colorselect\">";
+
+  for (i=0; i < h_colors.length; i++) {
+    if (i == 0) {
+      s += '<option value="' + h_colors[i] + '" selected>' + h_colors[i] + '</option>';
+    } else {
+      s += '<option value="' + h_colors[i] + '">' + h_colors[i] + '</option>';
+    }
+  }
+  
+  s += "</select>";
+  return s;
+}
+
+// TODO
+function add_trigger() {
+  var phrase = document.formwords.wordentry.value;
+  var color = document.formwords.colorselect.value;
+  
+  var add_error = DecafMUD.plugins.Display.standard.prototype.addTrigger(phrase, color);
+
+  if (add_error === "") {
+    localStorage.setItem('triggers', JSON.stringify(DecafMUD.plugins.Display.standard.prototype.triggers));
+    document.getElementById("live_triggers").innerHTML = trigger_list();
+  }
+}
+
+
+// TODO
+function menu_triggers() {
+  var pop = popup_textdiv(show_popup());
+  add_element(pop, "h2", "Add your trigger word(s)");
+  var frm = document.createElement("form");
+  frm.name = "formtriggers";
+  pop.appendChild(frm);
+
+  var addbtn = document.createElement("a");
+  addbtn.className = "fakebutton";
+  addbtn.href = "javascript:add_trigger();";
+  addbtn.innerHTML = "<big>+</big>";
+  frm.appendChild(addbtn);
+  
+
+  add_element(frm, "span", "<input id=\"wordentry\" type=\"text\" size=20 placeholder=\"Enter Word or Phrase\" value=\"\">" +
+    build_color_selector() + "<br><br>");
+
+  add_element(frm, "span", "<ul id=\"live_triggers\">" + trigger_list() + "</ul>")
+}
