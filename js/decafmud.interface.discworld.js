@@ -447,93 +447,6 @@ SimpleInterface.prototype.setup = function() {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// Settings
-///////////////////////////////////////////////////////////////////////////////
-
-/** Storage for the settings div. */
-//SimpleInterface.prototype.settings = undefined;
-
-/** Load the settings interface. */
-/*
-SimpleInterface.prototype.showSettings = function() {
-	// Is there already a settings element?
-	if ( this.settings ) {
-		this.settings.parentNode.removeChild(this.settings);
-		this.settings = undefined;
-		this.set_cont = undefined;
-		this.tbPressed(this.stbutton,false);
-		this.tbTooltip(this.stbutton,"Click to change DecafMUD's settings.".tr(this.decaf))
-		this.el_display.setAttribute('tabIndex','0');
-		
-		return;
-	}
-	
-	// Create the element.
-	var set = document.createElement('div');
-	set.className = 'decafmud window settings';
-	
-	// Apply top padding if the toolbar is visible
-	if ( this.toolbarPadding ) {
-		set.style.paddingTop = (this.toolbarPadding-5) + 'px';
-	}
-	
-	// Create the secondary layer for pretty spacing.
-	var seccont = document.createElement('div');
-	seccont.className = 'decafmud window-middle';
-	set.appendChild(seccont);
-	
-	// Create the actual holder.
-	var cont = document.createElement('div');
-	cont.className = 'decafmud window-inner';
-	seccont.appendChild(cont);
-	
-	// Fill it with settings!
-	var h = document.createElement('h2');
-	h.innerHTML = "DecafMUD Settings".tr(this.decaf);
-	cont.appendChild(h);
-	
-	var d = document.createElement('p');
-	d.innerHTML = "Use the form below to adjust DecafMUD's settings, then click Apply when you're done.".tr(this.decaf);
-	cont.appendChild(d);
-	
-	// Go through decaf.settings.
-	for(var k in this.decaf.settings) {
-		var setting = this.decaf.settings[k];
-		// Create the container for this settings branch.
-		var s = document.createElement('fieldset');
-		s.className = 'decafmud settings';
-		
-		// Calculate the name.
-		var n = k.substr(0,1).toUpperCase() + k.substr(1);
-		if ( setting['_name'] !== undefined ) { n = setting['_name']; }
-		
-		// Create a header.
-		var l = document.createElement('legend');
-		l.innerHTML = n;
-		s.appendChild(l);
-		
-		// Append the fieldset to the document.
-		cont.appendChild(s);
-	}
-	
-	// Compute the height.
-	var tot = this.container.offsetHeight - (this._input.offsetHeight + 17);
-	if ( this.toolbarPadding ) { tot = tot - (this.toolbarPadding-12); }
-	if ( tot < 0 ) { tot = 0; }
-	seccont.style.height = tot + 'px';
-	
-	// Show the settings pane.
-	this.el_display.setAttribute('tabIndex','-1');
-	this.container.insertBefore(set, this.el_display);
-	this.settings = set;
-	this.set_cont = cont;
-	this.set_mid  = seccont;
-	this.tbPressed(this.stbutton,true);
-	this.tbTooltip(this.stbutton,"Click to close the settings window.".tr(this.decaf));
-}
-*/
-
-///////////////////////////////////////////////////////////////////////////////
 // Toolbar Functions
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -1052,17 +965,6 @@ SimpleInterface.prototype._resizeTray = function() {
 ///////////////////////////////////////////////////////////////////////////////
 // Element Sizing
 ///////////////////////////////////////////////////////////////////////////////
-
-/** For when you click the fullscreen div. */
-/*
-SimpleInterface.prototype.click_fsbutton = function(e) {
-	if ( this.container.className.indexOf('fullscreen') === -1 ) {
-		this.enter_fs();
-	} else {
-		this.exit_fs();
-	}
-}
-*/
 
 /** Scroll position for when leaving FS. */
 SimpleInterface.prototype.oldscrollX = undefined;

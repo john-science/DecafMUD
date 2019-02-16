@@ -1,6 +1,3 @@
-/** Licensed under the MIT license.
- */
-
 /**
  * @fileOverview DecafMUD Display Provider: Standard
  */

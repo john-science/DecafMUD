@@ -172,7 +172,6 @@ DecafMUD.last_id	= -1;
  * }
  * @example
  * alert("You're using DecafMUD v" + DecafMUD.version.toString() + "!");
- * // You're using DecafMUD v0.9.1discworld!
  * @type Object */
 DecafMUD.version = {major: 0, minor: 9, micro: 1, flag: 'discworld',
 	toString: function(){ return this.major+'.'+this.minor+'.'+this.micro+( this.flag ? '-' + this.flag : ''); } };
