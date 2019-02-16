@@ -1,3 +1,9 @@
+/** This is the main dev-level debug flag.
+This can be set here, or at any time on a live console using:
+DecafMUD.prototype.debug = true;
+ */
+DEBUG_MODE = false;
+
 // Extend the String prototype with endsWith and substr_count.
 if ( String.prototype.endsWith === undefined ) {
 	/** Determine if a string ends with the given suffix.
@@ -40,7 +46,6 @@ if ( Array.prototype.indexOf === undefined ) {
 		return -1;
 	}
 }
-
 
 // Let's support older versions of ECMAScript that don't have array.filter()
 if (!Array.prototype.filter) {
@@ -163,7 +168,7 @@ DecafMUD.instances	= [];
 
 /** The ID of the latest instance of DecafMUD.
  * @type number */
-DecafMUD.last_id	= -1;
+DecafMUD.last_id = -1;
 
 /** DecafMUD's version. This can be used to check plugin compatability.
  * @example
@@ -177,10 +182,10 @@ DecafMUD.version = {major: 0, minor: 9, micro: 1, flag: 'discworld',
 	toString: function(){ return this.major+'.'+this.minor+'.'+this.micro+( this.flag ? '-' + this.flag : ''); } };
 
 // Default Values
-DecafMUD.prototype.loaded	= false;
+DecafMUD.prototype.debug		= DEBUG_MODE;  /** NOTE: THIS IS THE MASTER SWITCH FOR DEV DEBUGGING */
+DecafMUD.prototype.loaded		= false;
 DecafMUD.prototype.connecting	= false;
 DecafMUD.prototype.connected	= false;
-
 DecafMUD.prototype.loadTimer	= null;
 DecafMUD.prototype.timer		= null;
 DecafMUD.prototype.connect_try	= 0;
@@ -999,18 +1004,22 @@ DecafMUD.prototype.about = function() {
   * decaf.debugString("{name} broke their {bone}!", 'info', details);
   */
 DecafMUD.prototype.debugString = function(text, type, obj) {
+	var self = this;
+	// TODO
+	if (! self.debug) {return;}
+
 	// Return if we don't have the console or a debug pane.
-	if (! 'console' in window ) { return; }
+	if (! 'console' in window) {return;}
 	
 	// Set the type to debug by default
-	if ( type === undefined ) { type = 'debug'; }
+	if (type === undefined) {type = 'debug';}
 	
 	// Prepare the string. It's almost certain it won't be translatable, but
 	// the variable replacement is nice.
-	if ( obj !== undefined ) { text = text.tr(this, obj); }
+	if (obj !== undefined) {text = text.tr(this, obj);}
 	
 	// Firebug / Console Logging
-	if (!( 'console' in window )) { return; }
+	if (!('console' in window)) {return;}
 	var st = 'DecafMUD[%d]: %s';
 	switch(type) {
 		case 'info':	console.info(st, this.id, text); return;
