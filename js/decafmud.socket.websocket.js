@@ -1,14 +1,5 @@
-/*!
- * DecafMUD v0.9.0
- * http://decafmud.kicks-ass.net
- *
- * Copyright 2010, Stendec <stendec365@gmail.com>
- */
-
 /**
  * @fileOverview DecafMUD Socket Provider: WebSocket
- * @author Stendec <stendec365@gmail.com>
- * @version 0.9.0
  */
 
 (function(DecafMUD) {

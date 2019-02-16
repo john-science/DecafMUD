@@ -1,16 +1,6 @@
-/** TODO: Is this being used on the Discworld? */
-
-/*!
- * DecafMUD v0.9.0
- * http://decafmud.stendec.me
- *
- * Copyright 2010, Stendec <stendec365@gmail.com>
- */
 
  /**
  * @fileOverview DecafMUD Character Encoding: ISO-8859-15
- * @author Stendec <stendec365@gmail.com>
- * @version 0.9.0
  */
 
 (function(DecafMUD) {

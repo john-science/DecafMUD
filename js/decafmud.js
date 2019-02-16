@@ -972,8 +972,7 @@ if ( String.prototype.tr === undefined ) {
 
 /** Display a dialog with About information for DecafMUD. */
 DecafMUD.prototype.about = function() {
-	var abt = ["DecafMUD v{0} \u00A9 2010 Stendec"];
-	abt.push("http://decafmud.kicks-ass.net/\n");
+	var abt = ["DecafMUD v{0}"];
 	
 	abt.push("DecafMUD is a web-based MUD client written in JavaScript, rather" +
 		" than a plugin like Flash or Java, making it load faster and react as" +

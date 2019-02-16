@@ -1,15 +1,8 @@
-/*!
- * DecafMUD v0.9.0
- * http://decafmud.kicks-ass.net
- *
- * Copyright 2010, Stendec <stendec365@gmail.com>
- * Licensed under the MIT license.
+/** Licensed under the MIT license.
  */
 
 /**
  * @fileOverview DecafMUD Display Provider: Standard
- * @author Stendec <stendec365@gmail.com>
- * @version 0.9.0
  */
 
 (function(DecafMUD) {

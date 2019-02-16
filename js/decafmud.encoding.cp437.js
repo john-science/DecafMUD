@@ -1,15 +1,5 @@
-/*!
- * DecafMUD v0.9.0
- * http://decafmud.kicks-ass.net
- *
- * Copyright 2010, Stendec <stendec365@gmail.com>
- * Licensed under the MIT license.
- */
-
  /**
  * @fileOverview DecafMUD Character Encoding: Code Page 437 (IBM PC)
- * @author Stendec <stendec365@gmail.com>
- * @version 0.9.0
  */
 
 (function(DecafMUD) {
@@ -81,9 +71,6 @@ for(var i=0;i<chars.length;i++) {
 	if ( c < lowest && c > 0xFF ) { lowest = c; }
 	if ( c > highest ) { highest = c; }
 }
-//console.debug('Low: ' + lowest + '    High: ' + highest);
-
-// var o='';for(var i=0;i<256;i++){o+=String.fromCharCode(i)}DecafMUD.plugins.Encoding.cp437.encode(DecafMUD.plugins.Encoding.cp437.decode(o))
 
 // Expose to Decaf
 /** This provides support for the <a href="http://en.wikipedia.org/wiki/Code_page_437">CP437</a>

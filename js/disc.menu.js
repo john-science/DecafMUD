@@ -217,11 +217,10 @@ function popup_textdiv() {
   return div;
 }
 
-/**
- * ============================================
- * Functionality for the individual menu items.
- * ============================================
- */
+
+///////////////////////////////////////////////////////////////////////
+// Functionality for the individual menu items
+///////////////////////////////////////////////////////////////////////
 
 function menu_reconnect() {
   decaf.reconnect();
@@ -347,7 +346,6 @@ function change_font() {
   decaf.ui.input.focus();
 }
 
-
 function menu_macros() {
   var pop = popup_textdiv(show_popup());
 
@@ -460,20 +458,18 @@ function menu_about() {
   decaf.about();
 }
 
-/**
- * ===========================================
- * Functionality for the troubleshooting menu.
- * ===========================================
- */
 
+///////////////////////////////////////////////////////////////////////
+// Functionality for the troubleshooting menu
+///////////////////////////////////////////////////////////////////////
 function menu_trouble() {
   window.open("help.html", "Troubleshooting", "width=800,height=400,resizable=yes,scrollbar=yes,toolbar=yes,menubar=no,location=no,directories=no,status=no");
 }
 
 
-///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
 // Trigger Menu
-///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
 
 /** Just a pass through to call the class method */
 function remove_trigger(phraz) {
@@ -514,9 +510,9 @@ Catch and display errors if need be. */
 function add_trigger() {
   var phrase = document.formtriggers.wordentry;
   var color = document.formtriggers.colorselect.value;
-  
-  var add_error = DecafMUD.plugins.Display.standard.prototype.addTrigger(phrase.value, color);
 
+  /** try to add the user's new trigger, but catch any errors for them */
+  var add_error = DecafMUD.plugins.Display.standard.prototype.addTrigger(phrase.value, color);
   if (add_error === "") {
     document.getElementById("live_triggers").innerHTML = build_trigger_list();
   } else {
@@ -528,21 +524,24 @@ function add_trigger() {
 
 /** Populate the Trigger popup menu */
 function menu_triggers() {
+  /** create popup and form */
   var pop = popup_textdiv(show_popup());
   add_element(pop, "h2", "Add your trigger word(s)");
   var frm = document.createElement("form");
   frm.name = "formtriggers";
   pop.appendChild(frm);
 
+  /** create master button to add a new trigger */
   var addbtn = document.createElement("a");
   addbtn.className = "fakebutton";
   addbtn.href = "javascript:add_trigger();";
   addbtn.innerHTML = "<big>+</big>";
   frm.appendChild(addbtn);
-  
 
+  /** create inputs to define new trigger */
   add_element(frm, "span", "<input id=\"wordentry\" type=\"text\" size=20 placeholder=\"Enter Word or Phrase\" value=\"\">" +
     build_color_selector() + "<br><br>");
 
+  /** populate list of all current triggers */
   add_element(frm, "span", "<ul id=\"live_triggers\">" + build_trigger_list() + "</ul>")
 }

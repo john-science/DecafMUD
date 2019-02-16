@@ -1,9 +1,4 @@
-/** TODO: Is this being used on the Discworld? */
-
 /*!
- * DecafMUD v0.9.0
- * http://decafmud.stendec.me
- *
  * Socket: Flash
  *
  * This allows DecafMUD to connect with sockets provided by the Adobe Flash
@@ -12,8 +7,6 @@
  *
  * It, however, won't work on some mobile devices, such as Apple iDevices, and
  * requires a policy daemon to be running on the remote server.
- *
- * Copyright 2010, Stendec <stendec365@gmail.com>
  */
 
 (function(DecafMUD) {
