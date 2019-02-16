@@ -70,7 +70,7 @@ var Display = function(decaf, ui, disp) {
 	this.clear();
 	
 	// Display the DecafMUD banner.
-	this.message('<br><a href="http://decafmud.kicks-ass.net">DecafMUD</a> v' + DecafMUD.version + ' by Stendec &lt;<a href="mailto:stendec365@gmail.com">stendec365@gmail.com</a>&gt;<br>');
+	this.message('<br>DecafMUD v' + DecafMUD.version + '<br>');
 	if ( this.splash.length > 0 ) {
 		this.message(this.splash + '<br>'); }
 };

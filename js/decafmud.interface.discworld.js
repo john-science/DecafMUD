@@ -180,7 +180,7 @@ SimpleInterface.prototype.initSplash = function(percentage,message) {
 	this.splash.className = 'decafmud splash';
 	
 	// Build the contents.
-	this.splash.innerHTML  = '<h2 class="decafmud heading"><a href="http://decafmud.kicks-ass.net/">DecafMUD</a> <span class="version">v'+DecafMUD.version+'</span></h2>';
+	this.splash.innerHTML  = '<h2 class="decafmud heading">DecafMUD <span class="version">v'+DecafMUD.version+'</span></h2>';
 	
 	// Create a <div> to act as the progress indicator.
 	this.splash_pg = document.createElement('div');
