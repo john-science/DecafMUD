@@ -483,7 +483,7 @@ function build_trigger_list() {
   var t = "";
   /** NOTE: adding in reverse order so new items are at the top */
   for (i = triggers.length - 1; i >= 0; i--) {
-    t += '<li><span class="' + triggers[i][1] + '">' + triggers[i][0] + '</span> - <a href=\'javascript:remove_trigger("' + triggers[i][0] + '")\'>remove</a></li>';
+    t += '<li><span class="' + triggers[i][1] + '">' + triggers[i][0] + '</span> - <a href="javascript:remove_trigger(' + "'" + triggers[i][0].replace(/[\'']/g, "\\'") + "')\">remove</a></li>";
   }
   return t;
 }

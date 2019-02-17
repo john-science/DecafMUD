@@ -198,8 +198,8 @@ Display.prototype.addTrigger = function(new_phrase, color) {
 		add_error = "Too Short: need length > 2";
 	} else if (self.already_in_triggers(phrase)) {
 		add_error = "Trigger already exists";
-	} else if (phrase.indexOf("<") > -1 || phrase.indexOf("<") > -1) {
-		add_error = "HTML codes don't work";
+	} else if (phrase.indexOf("<") > -1 || phrase.indexOf("<") > -1 || phrase.indexOf('"') > -1) {
+		add_error = 'Forbidden Symbols: <, >, "';
 	} else if (self.looks_like_html(phrase)) {
 		add_error = "HTML codes don't work";
 	} else {
