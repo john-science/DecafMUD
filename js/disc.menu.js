@@ -539,7 +539,7 @@ function menu_triggers() {
   frm.appendChild(addbtn);
 
   /** create inputs to define new trigger */
-  add_element(frm, "span", "<input id=\"wordentry\" type=\"text\" size=20 placeholder=\"Enter Word or Phrase\" value=\"\">" +
+  add_element(frm, "span", "<input class=\"breathingroom\" id=\"wordentry\" type=\"text\" size=20 placeholder=\"Enter Word or Phrase\" value=\"\">" +
     build_color_selector() + "<br><br>");
 
   /** populate list of all current triggers */
