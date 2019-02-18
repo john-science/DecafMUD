@@ -276,6 +276,11 @@ dd {
   padding: 0 0 0.5em 0;
 }
 
+.breathingroom {
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
 a.fakebutton {
   background-color: blue;
   color: yellow;
