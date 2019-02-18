@@ -1,6 +1,4 @@
-/*
- * Decaf MUD
- * main.css
+/** DecafMUD - main CSS
  */
 
 body {
@@ -282,8 +280,8 @@ dd {
 }
 
 a.fakebutton {
-  background-color: blue;
-  color: yellow;
+  background-color: #999999;
+  color: #eeeeee;
   padding: 5px;
 }
 
