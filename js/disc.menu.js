@@ -490,7 +490,7 @@ function build_trigger_list() {
 
 /** build the HTML drop-down selector for trigger color options */
 function build_color_selector(){
-  var h_colors = ["red", "orange", "orangered", "yellow", "yellowgreen", "green", "turquoise", "blue", "purple", "pink"];
+  var h_colors = ["red", "orange", "orangered", "yellow", "green", "bluegreen", "blue", "purple", "pink"];
   var s = "<select id=\"colorselect\">";
 
   for (i=0; i < h_colors.length; i++) {
