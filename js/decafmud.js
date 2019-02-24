@@ -978,12 +978,12 @@ if ( String.prototype.tr === undefined ) {
 DecafMUD.prototype.about = function() {
 	var abt = ["DecafMUD v{0}"];
 	
-	abt.push("DecafMUD is a web-based MUD client written in JavaScript, rather" +
+	abt.push("\nDecafMUD is a web-based MUD client written in JavaScript, rather" +
 		" than a plugin like Flash or Java, making it load faster and react as" +
 		" you'd expect a website to.\n");
 	
 	abt.push("It's easy to customize as well, using simple CSS and JavaScript," +
-		" and free to use and modify, so long as your MU* is free to play!");
+		" and free to use and modify!");
 	
 	// Show the about dialog with a simple alert.
 	alert(abt.join('\n').tr(this, DecafMUD.version.toString()));
