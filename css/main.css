@@ -2,7 +2,7 @@
  */
 
 body {
-  background: url(../images/Shadow2.png) top center repeat-x #4f4e4c;
+  background-color: #4f4e4c;
   color: #FFF;
   margin: 0;
   height: 100%;
@@ -16,7 +16,7 @@ body {
 }
 
 div#head-cont {
-  background: url(../images/Shadow.png) top center repeat-y #572c01;
+  background-color: #572c01;
 }
 
 div#heading {
@@ -30,9 +30,7 @@ div#heading {
 }
 
 div#logo {
-  background: url(../images/Logo.png) 10px 0px no-repeat;
   min-height: 119px;
-  
   position: relative;
 }
 
@@ -188,7 +186,6 @@ div#subnav li.active a, div#subnav li.active a:hover {
 }
 
 div#container {
-  background: url(../images/Shadow.png) top center repeat-y;
   width: 830px;
   margin: 0 auto;
 }
@@ -209,7 +206,6 @@ div#foot-cont {
   width: 830px;
   margin: 0 auto;
   margin-top: 0px;
-  background: url(../images/Shadow3.png) top center repeat-x;
   min-height: 45px;
 }
 

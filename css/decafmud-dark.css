@@ -122,7 +122,6 @@
 
 /* Info Bars */
 .decafmud.infobar {
-	background: url(../images/decaf-icon.png) 5px 17px no-repeat;
 	background-color: #191919;
 	background-color: rgba(26,26,26,0.95); 
 	border-color: #666;
