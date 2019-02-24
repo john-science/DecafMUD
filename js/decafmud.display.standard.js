@@ -233,7 +233,7 @@ RegExp.escape = function(s) {
 Display.prototype.playTriggerSound = function(soundName) {
 	var self = this;
 	/** The user may not want to play a sound. */
-	if (soundName === "none") {return;}
+	if (soundName === "no_sound") {return;}
 
 	/** Play a sound. Load it if you haven't already. */
 	if (!(soundName in self.triggerSounds)) {

@@ -507,14 +507,14 @@ function build_color_selector(){
 
 /** build the HTML drop-down selector for trigger sound options */
 function build_sound_selector(){
-  var t_sounds = ["none", "beep_beep", "beep_boop", "phone_call", "tricorder", "whistle"];
+  var t_sounds = ["No Sound", "Beep Beep", "Beep Boop", "Phone Call", "Tricorder", "Whistle"];
   var s = '<select id="soundselect" class="breathingroom">';
 
   for (i=0; i < t_sounds.length; i++) {
     if (i == 0) {
-      s += '<option value="' + t_sounds[i] + '" selected>' + t_sounds[i] + '</option>';
+      s += '<option value="' + t_sounds[i].toLowerCase().replace(" ", "_") + '" selected>' + t_sounds[i] + '</option>';
     } else {
-      s += '<option value="' + t_sounds[i] + '">' + t_sounds[i] + '</option>';
+      s += '<option value="' + t_sounds[i].toLowerCase().replace(" ", "_") + '">' + t_sounds[i] + '</option>';
     }
   }
   
