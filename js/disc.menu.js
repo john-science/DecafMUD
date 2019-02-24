@@ -490,14 +490,31 @@ function build_trigger_list() {
 
 /** build the HTML drop-down selector for trigger color options */
 function build_color_selector(){
-  var h_colors = ["red", "orange", "orangered", "yellow", "green", "bluegreen", "blue", "purple", "pink"];
-  var s = "<select id=\"colorselect\">";
+  var t_colors = ["red", "orange", "orangered", "yellow", "green", "bluegreen", "blue", "purple", "pink"];
+  var s = '<select id="colorselect">';
 
-  for (i=0; i < h_colors.length; i++) {
+  for (i=0; i < t_colors.length; i++) {
     if (i == 0) {
-      s += '<option value="t' + i + '" selected>' + h_colors[i] + '</option>';
+      s += '<option value="t' + i + '" selected>' + t_colors[i] + '</option>';
     } else {
-      s += '<option value="t' + i + '">' + h_colors[i] + '</option>';
+      s += '<option value="t' + i + '">' + t_colors[i] + '</option>';
+    }
+  }
+  
+  s += "</select>";
+  return s;
+}
+
+/** build the HTML drop-down selector for trigger sound options */
+function build_sound_selector(){
+  var t_sounds = ["none", "beep_beep", "beep_boop", "phone_call", "tricorder", "whistle"];
+  var s = '<select id="soundselect" class="breathingroom">';
+
+  for (i=0; i < t_sounds.length; i++) {
+    if (i == 0) {
+      s += '<option value="' + t_sounds[i] + '" selected>' + t_sounds[i] + '</option>';
+    } else {
+      s += '<option value="' + t_sounds[i] + '">' + t_sounds[i] + '</option>';
     }
   }
   
@@ -510,9 +527,10 @@ Catch and display errors if need be. */
 function add_trigger() {
   var phrase = document.formtriggers.wordentry;
   var color = document.formtriggers.colorselect.value;
+  var sound = document.formtriggers.soundselect.value;
 
   /** try to add the user's new trigger, but catch any errors for them */
-  var add_error = DecafMUD.plugins.Display.standard.prototype.addTrigger(phrase.value, color);
+  var add_error = DecafMUD.plugins.Display.standard.prototype.addTrigger(phrase.value, color, sound);
   if (add_error === "") {
     document.getElementById("live_triggers").innerHTML = build_trigger_list();
   } else {
@@ -539,9 +557,9 @@ function menu_triggers() {
   frm.appendChild(addbtn);
 
   /** create inputs to define new trigger */
-  add_element(frm, "span", "<input class=\"breathingroom\" id=\"wordentry\" type=\"text\" size=20 placeholder=\"Enter Word or Phrase\" value=\"\">" +
-    build_color_selector() + "<br><br>");
+  add_element(frm, "span", '<input class="breathingroom" id="wordentry" type="text" size=20 placeholder="Enter Word or Phrase" value="">' +
+    build_color_selector() + build_sound_selector() + "<br><br>");
 
   /** populate list of all current triggers */
-  add_element(frm, "span", "<ul id=\"live_triggers\">" + build_trigger_list() + "</ul>")
+  add_element(frm, "span", '<ul id="live_triggers">' + build_trigger_list() + "</ul>")
 }

@@ -93,6 +93,7 @@ Display.prototype.scrollTime = null;
 Display.prototype.willScroll = false;
 Display.prototype.mxp = false;
 Display.prototype.triggers = JSON.parse(localStorage.getItem('triggers')) || [];
+Display.prototype.triggerSounds = {};
 
 // Clear the display.
 Display.prototype.clear = function() {
@@ -188,7 +189,7 @@ Display.prototype.looks_like_html = function(s) {
 };
 
 /** Not a full setter, just addig a single phraz to the trigger list */
-Display.prototype.addTrigger = function(new_phrase, color) {
+Display.prototype.addTrigger = function(new_phrase, color, sound) {
 	var self = this;
 	var add_error = "";
 
@@ -203,7 +204,7 @@ Display.prototype.addTrigger = function(new_phrase, color) {
 	} else if (self.looks_like_html(phrase)) {
 		add_error = "HTML codes don't work";
 	} else {
-		self.triggers.push([phrase, color]);
+		self.triggers.push([phrase, color, sound]);
 		localStorage.setItem('triggers', JSON.stringify(self.triggers));
 	}
 
@@ -226,15 +227,33 @@ Display.prototype.remove_trigger = function(word) {
 /** Add a tool to escape all RegEx from a string,
 essentially just leave the string alone. */
 RegExp.escape = function(s) {
-    return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+	return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 };
+
+Display.prototype.playTriggerSound = function(soundName) {
+	var self = this;
+	/** The user may not want to play a sound. */
+	if (soundName === "none") {return;}
+
+	/** Play a sound. Load it if you haven't already. */
+	if (!(soundName in self.triggerSounds)) {
+		self.triggerSounds[soundName] = new Audio("resources/" + soundName + ".wav");
+	}
+	self.triggerSounds[soundName].play();
+}
 
 /** Wrap any highlightable words in custom CSS.
  @param {String} data The data to be displayed. */
 Display.prototype.handleHighlighting = function(data) {
 	var self = this;
-  	for (i = 0; i < self.triggers.length; i++) {
-		data = data.replace(new RegExp(RegExp.escape(self.triggers[i][0]), 'gi'), '<span class="' + self.triggers[i][1] + '">' + self.triggers[i][0] + '</span>');
+	var new_data = "";
+	for (i = 0; i < self.triggers.length; i++) {
+		new_data = data.replace(new RegExp(RegExp.escape(self.triggers[i][0]), 'gi'), '<span class="' + self.triggers[i][1] + '">' + self.triggers[i][0] + '</span>');
+		if (new_data.length > data.length) {
+			var soundName = self.triggers[i][2];
+			self.playTriggerSound(soundName);
+		}
+		data = new_data;
 	}
 	return data;
 };
