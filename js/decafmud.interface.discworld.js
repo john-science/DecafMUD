@@ -457,7 +457,6 @@ SimpleInterface.prototype.tbDelete = function(id) {
 	var btn = this.toolbuttons[id];
 	btn[0].parentNode.removeChild(btn[0]);
 	this.toolbuttons[id] = undefined;
-	delete btn;
 	
 	// Resize the toolbar.
 	this._resizeToolbar();
@@ -923,9 +922,8 @@ SimpleInterface.prototype.delIcon = function(ind) {
 	var el = this.icons[ind][0];
 	this.icons.splice(ind,1);
 	
-	// Remove the icon from DOM and delete.
+	// Remove the icon from DOM.
 	this._input.removeChild(el);
-	delete el;
 	
 	// Recalculate icon positions.
 	for(var i=0; i < this.icons.length; i++) {
@@ -1475,7 +1473,6 @@ SimpleInterface.prototype.updateInput = function(force) {
 		
 		// Remove input.
 		par.removeChild(inp);
-		delete inp;
 		delete this.input;
 		
 		// Attach the new input.
@@ -1510,7 +1507,6 @@ SimpleInterface.prototype.updateInput = function(force) {
 		
 		// Remove input.
 		par.removeChild(inp);
-		delete inp;
 		delete this.input;
 		
 		// Attach the new input.
