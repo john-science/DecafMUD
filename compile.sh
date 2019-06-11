@@ -19,7 +19,8 @@ rm -rf compiler
 
 java -jar closure-compiler-v20190513.jar js/*.js --js_output_file=compiled/main.js
 
-# TODO: compiler the CSS, don't just copy
+# TODO: wget https://github.com/google/closure-stylesheets/releases/download/v1.5.0/closure-stylesheets.jar
+# TODO: java -jar closure-stylesheets.jar --help
 cp css/*.css compiled/css/
 
 sed '/JAVASCRIPT/c\  <script src="main.js" type="text/javascript">' web_client.html > compiled/web_client.html
