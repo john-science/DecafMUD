@@ -8,11 +8,11 @@ Going forward, this particular client will be entirely devoted to the Discworld 
 
 ## Release / Build Process
 
-DecafMUD will work as-is with no release / build process at all. In fact, it was originally designed that way and worked quite well as a simple collection of HTML, JavaScript, and CSS files for many years. But now DecafMUD sports a new feature, the ability to compile down the code. This has several advantages:
+DecafMUD will work as-is with no release / build process at all. In fact, it was originally designed that way and worked quite well for many years. But now DecafMUD sports a new feature, the ability to compile the code. This has several advantages:
 
-* smaller file sizes for users to download to play
-* automatic error-checking throughout the code
-* automatic checking to see if we support various versions of various browsers
+* smaller file sizes to download
+* automatic error-checking
+* automatic verification of supported browser versions
 
 To use this automated build system, you simply need to run the BASH script `compile.sh` on any Unix / Linux system:
 
@@ -20,4 +20,4 @@ To use this automated build system, you simply need to run the BASH script `comp
 bash compile.sh
 ```
 
-The above command will generate a folder called "compiled" with everything a player needs to run DecafMUD. It will have a similar layout to the project that exists before compiling, but there will just be *less* code.
+The above command will generate a folder `compiled` with everything a player needs to run DecafMUD. It will have a similar layout to the project that exists before compiling, but there will just be *less* of everything.
