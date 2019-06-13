@@ -10,17 +10,23 @@
 
 mkdir compiled/css -p
 
-# TODO: wrap this in a test for 
-mkdir -p compiler
+# TODO: wrap this in a test for existence of JS compiler
+mkdir -p js_compiler
+pushd js_compiler
 wget https://dl.google.com/closure-compiler/compiler-20190513.tar.gz
 tar -xvzf compiler-20190513.tar.gz
 mv closure-compiler-v20190513.jar ..
+popd
 rm -rf compiler
 
 java -jar closure-compiler-v20190513.jar js/*.js --js_output_file=compiled/main.js
 
-# TODO: wget https://github.com/google/closure-stylesheets/releases/download/v1.5.0/closure-stylesheets.jar
-# TODO: java -jar closure-stylesheets.jar --help
-cp css/*.css compiled/css/
+# If it is not already present, grab the Google closure CSS minifier
+if [ ! -f closure-stylesheets.v1.5.0.jar]
+then
+	wget https://github.com/google/closure-stylesheets/releases/download/v1.5.0/closure-stylesheets.jar
+	mv closure-stylesheets.jar closure-stylesheets.v1.5.0.jar
+fi
+java -jar closure-stylesheets.v1.5.0.jar css/*.css -o compiled/css/main.css
 
 sed '/JAVASCRIPT/c\  <script src="main.js" type="text/javascript">' web_client.html > compiled/web_client.html
