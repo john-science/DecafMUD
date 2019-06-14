@@ -5,17 +5,18 @@
 # The purpose of this script is to minify the Javascript and CSS for the DecafMUD client,
 # and to more robustly test for syntax errors and version support.
 #
-# This script is not *necessary* to run the client, though it is preferable to run this script
-# before a release.
+# This script is not *necessary* to run the client, though it is preferable.
+# Running this script before deployment will improve performance.
 
-# CONFIG
+# Google Closure compiler versions
 JS_VERSION="v20190513"
 CSS_VERSION="v1.5.0"
 
-# remove any old compiled versions
+# remove any old compiled versions that may be hanging around
+rm -rf compiled
 mkdir compiled/css -p
 
-# If it is not already present, grab the Google closure JS minifier.
+# If it is not already present, grab the JS minifier.
 if [ ! -f closure-compiler-${JS_VERSION}.jar]
 then
 	mkdir -p js_compiler
@@ -30,7 +31,7 @@ fi
 # Compile the JS and move it into place.
 java -jar closure-compiler-${JS_VERSION}.jar js/*.js --js_output_file=compiled/main.js
 
-# If it is not already present, grab the Google closure CSS minifier.
+# If it is not already present, grab the CSS minifier.
 if [ ! -f closure-stylesheets.${CSS_VERSION}.jar]
 then
 	wget https://github.com/google/closure-stylesheets/releases/download/${CSS_VERSION}/closure-stylesheets.jar
