@@ -17,7 +17,7 @@ rm -rf compiled
 mkdir compiled/css -p
 
 # If it is not already present, grab the JS minifier.
-if [ ! -f closure-compiler-${JS_VERSION}.jar]
+if [ ! -f closure-compiler-${JS_VERSION}.jar ]
 then
 	mkdir -p js_compiler
 	pushd js_compiler
@@ -25,14 +25,14 @@ then
 	tar -xvzf compiler-${JS_VERSION}.tar.gz
 	mv closure-compiler-${JS_VERSION}.jar ..
 	popd
-	rm -rf compiler
+	rm -rf js_compiler
 fi
 
 # Compile the JS and move it into place.
 java -jar closure-compiler-${JS_VERSION}.jar js/*.js --js_output_file=compiled/main.js
 
 # If it is not already present, grab the CSS minifier.
-if [ ! -f closure-stylesheets.${CSS_VERSION}.jar]
+if [ ! -f closure-stylesheets.${CSS_VERSION}.jar ]
 then
 	wget https://github.com/google/closure-stylesheets/releases/download/${CSS_VERSION}/closure-stylesheets.jar
 	mv closure-stylesheets.jar closure-stylesheets.${CSS_VERSION}.jar
