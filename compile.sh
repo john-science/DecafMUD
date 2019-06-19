@@ -19,6 +19,7 @@ mkdir compiled/css -p
 # If it is not already present, grab the JS minifier.
 if [ ! -f closure-compiler-${JS_VERSION}.jar ]
 then
+	echo "Downloading closure-compiler-${JS_VERSION}.jar"
 	mkdir -p js_compiler
 	pushd js_compiler
 	wget https://dl.google.com/closure-compiler/compiler-${JS_VERSION}.tar.gz
@@ -34,6 +35,7 @@ java -jar closure-compiler-${JS_VERSION}.jar js/*.js --js_output_file=compiled/m
 # If it is not already present, grab the CSS minifier.
 if [ ! -f closure-stylesheets.${CSS_VERSION}.jar ]
 then
+	echo "Downloading closure-stylesheets.${CSS_VERSION}.jar"
 	wget https://github.com/google/closure-stylesheets/releases/download/${CSS_VERSION}/closure-stylesheets.jar
 	mv closure-stylesheets.jar closure-stylesheets.${CSS_VERSION}.jar
 fi

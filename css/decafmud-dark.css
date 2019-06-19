@@ -31,14 +31,8 @@
 	-webkit-animation-timing-function: ease-in-out;
 }
 .decafmud .scroll-button:hover, .decafmud .scroll-button:focus {
-	-webkit-animation-name: none; }
-
-/* Windows
-.decafmud.window {
-	border-color: #333;
-	border-color: rgba(56,56,56,0.9);
-	background-color: rgba(70,70,70,1);
-} */
+	-webkit-animation-name: none;
+}
 	
 /* Splash Screen */
 .decafmud.splash {
