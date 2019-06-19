@@ -901,7 +901,7 @@ if ( String.prototype.tr === undefined ) {
 	 *  in the target language.
 	 * @default "false"
 	 * @constant */
-	String.logNonTranslated = true && 'console' in window;
+	String.logNonTranslated = 'console' in window;
 	/** Translate a string from English to a different language, optionally
 	 *  replacing special character sequences with the provided variables.
 	 *
@@ -1009,7 +1009,7 @@ DecafMUD.prototype.debugString = function(text, type, obj) {
 	if (! self.debug) {return;}
 
 	// Return if we don't have the console or a debug pane.
-	if (! 'console' in window) {return;}
+	if (! ('console' in window)) {return;}
 	
 	// Set the type to debug by default
 	if (type === undefined) {type = 'debug';}
@@ -1337,12 +1337,7 @@ DecafMUD.prototype.initFinal = function() {
 			this.telopt[k] = o;
 		}
 	}
-	
-	// Add an About button to the toolbar.
-/*
-	if ( this.ui.tbNew ) {
-		this.ui.tbNew("About".tr(this), function(){ this.decaf.about(); }); }
-*/	
+
 	// We're loaded. Start up anything that's necessary and try to connect.
 	this.loaded = true;
         start_zmp();
@@ -1357,23 +1352,7 @@ DecafMUD.prototype.initFinal = function() {
 			'the best experience.';
 		this.ui.infoBar(msg.tr(this));
 	}
-	
-/*
-        this.ui.display.message("Discworld is currently experiencing some "+
-          "connection problems.  If this program is failing to connect, this "+
-          "may be because you have a flash blocker, or because the mud is "+
-          "not responding.  In the latter case, you can try the following "+
-          "things:<ul><li><a href=\"http://discworld.starturtle.net/lpc/"+
-          "decafmud/flash_client.html?ipv6\">Connect on IPV6</a></li><li>"+
-          "<a href= \"http://discworld.starturtle.net/lpc/decafmud/"+
-          "flash_client.html?ipv4\">Force connection on IPV4</a></li><li>"+
-          "<a href=\"http://discworld.starturtle.net/external/java/newtelnet/"+
-          "java_client.shtml\">Use the Java Client</a></li><li><a href=\""+
-          "http://sourceforge.net/projects/coldbeer/files/\">Download and "+
-          "run Coldbeer</a></li><li>Use another mud client (plenty of which "+
-          "are available for free on the web) and connect to discworld."+
-          "starturtle.net on port 4242.</li></ul>");
-*/
+
         this.ui.display.message("If this program is failing to connect, "+
           "check whether you have a flash blocker and if so, turn it off "+
           "for Discworld.  Otherwise, connect using <a href=\"web_client.html\">"+

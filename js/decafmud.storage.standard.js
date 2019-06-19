@@ -16,7 +16,7 @@
 var Storage = function(decaf,path) {
 	// Handle the path. It defaults to '/' if we don't have any other name.
 	if ( path === undefined ) { path = ''; }
-	this.path = path+'/';
+	this.path = path + '/';
 	
 	// Were we handed a Storage?
 	if ( decaf instanceof Storage ) {
@@ -34,7 +34,7 @@ var Storage = function(decaf,path) {
 	this.children = [];
 	
 	// Ensure that we have localStorage
-	if ( ! 'localStorage' in window ) {
+	if ( ! ('localStorage' in window) ) {
 		throw "This storage backend can only be used in browsers supporting localStorage."; }
 	
 	return this;

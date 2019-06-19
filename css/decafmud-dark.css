@@ -33,12 +33,12 @@
 .decafmud .scroll-button:hover, .decafmud .scroll-button:focus {
 	-webkit-animation-name: none; }
 
-/* Windows */
+/* Windows
 .decafmud.window {
 	border-color: #333;
 	border-color: rgba(56,56,56,0.9);
 	background-color: rgba(70,70,70,1);
-}
+} */
 	
 /* Splash Screen */
 .decafmud.splash {
@@ -63,7 +63,6 @@
 .decafmud.note {
 	background: #121212;
 	background-color: rgba(20,20,20,0.9);
-	border-color: #333;
 	border-color: rgba(56,56,56,0.9);
 }
 
@@ -110,39 +109,30 @@
 
 /* Toolbar */
 .decafmud.toolbar {
-	background-color: #333;
 	background-color: rgba(56,56,56,0.95);
-	border-color: #666;
 	border-color: rgba(113,113,113,0.9);
 }
 
 .decafmud.toolbar .button.toggle {
-	border-color: #666;
 	border-color: rgba(113,113,113,0.9); }
 
 /* Info Bars */
 .decafmud.infobar {
-	background-color: #191919;
-	background-color: rgba(26,26,26,0.95); 
-	border-color: #666;
+	background-color: rgba(26,26,26,0.95);
 	border-color: rgba(113,113,113,0.9);
 }
 .decafmud.infobar .close:hover, .decafmud.infobar .close:focus {
 	background-color: #000;
 }
 .decafmud.infobar.clickable:hover,.decafmud.infobar.clickable:focus {
-	border-color: #888;
 	border-color: rgba(151,151,151,0.9);
 }
 .decafmud.toolbar .button,.decafmud.infobar .button {
 	color: #FFF;
-	background-color: #121212;
 	background-color: rgba(20,20,20,0.9);
-	border-color: #666;
 	border-color: rgba(113,113,113,0.9);
 }
 .decafmud.toolbar .button:hover,.decafmud.toolbar .button:focus,.decafmud.infobar .button:hover,.decafmud.infobar .button:focus {
-	background-color: #666;
 	background-color: rgba(113,113,113,0.9);
 }
 

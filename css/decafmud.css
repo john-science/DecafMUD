@@ -145,6 +145,8 @@
   left: 0px;
   right: 0px;
   padding: 0px;
+  border-color: rgba(56,56,56,0.9);
+  background-color: rgba(70,70,70,1);
 }
 
 .decafmud.window-header {
