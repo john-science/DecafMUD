@@ -1279,7 +1279,6 @@ DecafMUD.prototype.updateSplash = function(module,next_mod,perc) {
 	}
 	
 	this.ui.updateSplash(perc, next_mod);
-	
 }
 
 /** The second step of initialization. */
@@ -1437,9 +1436,6 @@ DecafMUD.prototype.socketConnected = function() {
 	// Show that we're connected.
 	if ( this.ui && this.ui.connected ) {
 		this.ui.connected(); }
-	
-	//if ( this.display ) {
-	//	this.display.message('<b>Connected.</b>'.tr(this,host,port),'decafmud socket status'); }
 }
 
 DecafMUD.prototype.reconnect = function() {
@@ -1580,8 +1576,6 @@ DecafMUD.prototype.processBuffer = function() {
 		if ( ind === -1 ) {
 			var enc = this.decode(data);
 			
-			
-			
 			this.display.handleData(enc[0]);
 			this.inbuf.splice(1,0,enc[1]);
 			break;
@@ -1635,7 +1629,6 @@ DecafMUD.prototype.readIAC = function(data) {
 	
 	// If it's an IAC SB, read as much as we can to get it all.
 	else if ( data.charAt(1) === t.SB ) {
-		//this.debugString('RCVD ' + DecafMUD.debugIAC(data.substr(0,10)));
 		var seq = '', l = t.IAC + t.SE;
 		var code = data.charAt(2);
 		data = data.substr(3);
@@ -1652,8 +1645,6 @@ DecafMUD.prototype.readIAC = function(data) {
                                        this.readIAC(data);
                                 */
                         }    
-
-
 
 			if ( ind > 0 && data.charAt(ind-1) === t.IAC ) {
 				// Escaped. Continue
