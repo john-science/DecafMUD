@@ -44,4 +44,4 @@ fi
 java -jar closure-stylesheets.${CSS_VERSION}.jar css/*.css -o compiled/css/main.css
 
 # Update the HTML to work with compiled resources and move it into place.
-sed '/REMOVED_WHEN_COMPILING/c\  <script src="main.js" type="text/javascript">' web_client.html > compiled/web_client.html
+sed '/REMOVED_WHEN_COMPILING/c\  <script src="main.js" type="text/javascript"></script>' web_client.html > compiled/web_client.html
