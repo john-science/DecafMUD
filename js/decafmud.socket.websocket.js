@@ -24,8 +24,8 @@
  * @param {DecafMUD} decaf The instance of DecafMUD using this plugin.
  */
 var DecafWebSocket = function DecafWebSocket(decaf) {
-        // Store DecafMUD for later use.
-        this.decaf = decaf;
+    // Store DecafMUD for later use.
+    this.decaf = decaf;
 }
 
 // Storage of all the WebSockets
@@ -52,74 +52,73 @@ DecafWebSocket.prototype.websocket = null;
  *  {@link DecafMUD#socketReady} method to tell DecafMUD to proceed
  *  to the next step of the startup procedure. */
 DecafWebSocket.prototype.setup = function() {
-        // If WebSockets are available, immediately call the socketReady event of
-        // our DecafMUD instance. Otherwise, error out.
-        if ( "WebSocket" in window ) {
-                this.ready = true;
-                this.decaf.socketReady(this);
-                return; }
-        
-        clearTimeout(this.decaf.timer);
-        this.decaf.error("Unable to create a WebSocket. Does your browser support them? If not, try {0}.".tr(
-                this.decaf, '<a href="http://www.google.com/chrome" target="_blank">Google Chrome</a>'));
-}
+    // If WebSockets are available, immediately call the socketReady event of
+    // our DecafMUD instance. Otherwise, error out.
+    if ( "WebSocket" in window ) {
+        this.ready = true;
+        this.decaf.socketReady(this);
+        return; }
+    
+    clearTimeout(this.decaf.timer);
+    this.decaf.error("Unable to create a WebSocket. Does your browser support them? If not, try {0}.".tr('<a href="http://www.google.com/chrome" target="_blank">Google Chrome</a>'));
+};
 
 /** Connects to the remote server. All the necessary data is pulled from
  *  the {@link DecafMUD} instance's options, so there aren't any parameters. */
 DecafWebSocket.prototype.connect = function() {
-        // If we're connected, disconnect.
-        if ( this.connected && this.websocket ) {
-                delete DecafWebSocket.sockets[this.websocket];
-                this.websocket.close();
-                this.websocket = null; }
-        
-        // Determine the port to connect on.
-        var port = this.port;
+    // If we're connected, disconnect.
+    if ( this.connected && this.websocket ) {
+        delete DecafWebSocket.sockets[this.websocket];
+        this.websocket.close();
+        this.websocket = null; }
+
+    // Determine the port to connect on.
+    var port = this.port;
+    if ( port === undefined ) {
+        port = this.decaf.options.set_socket.wsport;
+        if ( port < 1 || port > 65535 ) {
+            port = this.decaf.options.set_socket.policyport; }
         if ( port === undefined ) {
-                port = this.decaf.options.set_socket.wsport;
-                if ( port < 1 || port > 65535 ) {
-                        port = this.decaf.options.set_socket.policyport; }
-                if ( port === undefined ) {
-                        port = 4243; }
-                
-                this.port = port;
-        }
+            port = 4243; }
         
-        // Set the path variable
-        var path = this.decaf.options.set_socket.wspath;
-        if ( ! path ) {
-                path = 'port_' + this.decaf.options.port; }
+        this.port = port;
+    }
+
+    // Set the path variable
+    var path = this.decaf.options.set_socket.wspath;
+    if ( ! path ) {
+            path = 'port_' + this.decaf.options.port; }
+    
+    // Get the hostname
+    var host = this.host;
+    if ( host === undefined ) {
+        host = this.decaf.options.host;
+        if ( ! host ) {
+            host = document.location.host; }
         
-        // Get the hostname
-        var host = this.host;
-        if ( host === undefined ) {
-                host = this.decaf.options.host;
-                if ( ! host ) {
-                        host = document.location.host; }
-                
-                this.host = host;
-        }
-        
-        // Create the websocket and attach our events.
-        var con = 'ws://' + host + ':' + port + '/' + path;
-        this.decaf.debugString('WebSocket Connection String: ' + con);
-        var sock = new WebSocket(con);
-        sock.binaryType = 'arraybuffer';
-        this.websocket = sock;
-        DecafWebSocket.sockets[this.websocket] = this;
-        
-        this.websocket.onopen           = DecafWebSocket.onOpen;
-        this.websocket.onclose          = DecafWebSocket.onClose;
-        this.websocket.onmessage        = DecafWebSocket.onMessage;
+        this.host = host;
+    }
+
+    // Create the websocket and attach our events.
+    var con = 'ws://' + host + ':' + port + '/' + path;
+    this.decaf.debugString('WebSocket Connection String: ' + con);
+    var sock = new WebSocket(con);
+    sock.binaryType = 'arraybuffer';
+    this.websocket = sock;
+    DecafWebSocket.sockets[this.websocket] = this;
+
+    this.websocket.onopen    = DecafWebSocket.onOpen;
+    this.websocket.onclose   = DecafWebSocket.onClose;
+    this.websocket.onmessage = DecafWebSocket.onMessage;
 }
 
 /** Closes the current connection and cleans up the WebSocket object. */
 DecafWebSocket.prototype.close = function() {
-        this.connected = false;
-        if ( this.websocket ) {
-                delete DecafWebSocket.sockets[this.websocket];
-                this.websocket.close();
-                this.websocket = null; }
+    this.connected = false;
+    if ( this.websocket ) {
+        delete DecafWebSocket.sockets[this.websocket];
+        this.websocket.close();
+        this.websocket = null; }
 }
 
 /** Ensure that the socket is connected to a remote server.
@@ -132,8 +131,8 @@ DecafWebSocket.prototype.close = function() {
  * @private
  * @throws {String} If the socket is not connected. */
 DecafWebSocket.prototype.assertConnected = function() {
-        if ( ! this.connected || ! this.websocket ) {
-                throw "DecafMUD is not currently connected."; }
+    if ( ! this.connected || ! this.websocket ) {
+        throw "DecafMUD is not currently connected."; }
 }
 
 /** Send data to the remote server.
@@ -143,17 +142,12 @@ DecafWebSocket.prototype.assertConnected = function() {
  *    string consisting only of the bytes 0 to 255.
  * @throws {String} If the data cannot be written for any reason. */
 DecafWebSocket.prototype.write = function(data) {
-  this.assertConnected();
-  var text = new Array();
-  for(var i=0; i< data.length; i++)
-    text[i] =  data.charCodeAt(i);
-  var arr = (new Uint8Array(text)).buffer;
-  /*
-  if ( ! this.websocket.send(arr) ) {
-    throw "Error sending data to the server.";
-  }
-  */
-  this.websocket.send(arr);
+    this.assertConnected();
+    var text = new Array();
+    for(var i=0; i< data.length; i++)
+        text[i] =  data.charCodeAt(i);
+    var arr = (new Uint8Array(text)).buffer;
+    this.websocket.send(arr);
 }
 
 /** Called when the WebSocket's onOpen event fires. If the WebSocket's readyState
@@ -162,12 +156,12 @@ DecafWebSocket.prototype.write = function(data) {
  * @private
  * @event */
 DecafWebSocket.onOpen = function() {
-        var sock = DecafWebSocket.sockets[this];
-        
-        // Are we connected?
-        if ( this.readyState === 1 ) {
-                sock.connected = true;
-                sock.decaf.socketConnected(); }
+    var sock = DecafWebSocket.sockets[this];
+
+    // Are we connected?
+    if ( this.readyState === 1 ) {
+        sock.connected = true;
+        sock.decaf.socketConnected(); }
 }
 
 /** Called when the WebSocket's onClose event fires. If the socket was
@@ -176,14 +170,14 @@ DecafWebSocket.onOpen = function() {
  * @private
  * @event */
 DecafWebSocket.onClose = function() {
-        var sock = DecafWebSocket.sockets[this];
-        
-        // Were we connected?
-        if ( sock.connected ) {
-                sock.connected = false;
-                sock.decaf.socketClosed();
-                delete DecafWebSocket.sockets[this];
-                sock.websocket = null; }
+    var sock = DecafWebSocket.sockets[this];
+
+    // Were we connected?
+    if (sock.connected) {
+        sock.connected = false;
+        sock.decaf.socketClosed();
+        delete DecafWebSocket.sockets[this];
+        sock.websocket = null; }
 }
 
 /** Called when the WebSocket's onMessage event fires. Simply pass the data
@@ -200,11 +194,9 @@ DecafWebSocket.onMessage = function(event) {
 	}
         // Pass the data on to DecafMUD.
         sock.decaf.socketData(rq);
-    //sock.decaf.socketData(event.data);
 }
 
 // Add this to DecafMUD
 DecafMUD.plugins.Socket.websocket = DecafWebSocket;
 
 })(DecafMUD);
-

@@ -59,7 +59,7 @@ FlashSocket.prototype.setup = function(count) {
 			this.decaf.timer = setTimeout(function() { sock.setup(count+1); },25);
 			return;
 		} else {
-			this.decaf.error('Unable to load SWFObject. Please download it from {0}.'.tr(this.decaf,'<a href="http://code.google.com/p/swfobject/">http://code.google.com/p/swfobject/</a>'));
+			this.decaf.error('Unable to load SWFObject. Please download it from {0}.'.tr('<a href="http://code.google.com/p/swfobject/">http://code.google.com/p/swfobject/</a>'));
 		}
 	}
 	
@@ -96,7 +96,7 @@ FlashSocket.prototype.setup = function(count) {
 // Error if there is no socket.
 FlashSocket.prototype.noSocket = function() {
 	clearTimeout(this.decaf.timer);
-	this.decaf.error('Unable to create a Flash socket. Please ensure that you have the Adobe Flash plugin installed and that it\'s currently up to date.'.tr(this.decaf));
+	this.decaf.error('Unable to create a Flash socket. Please ensure that you have the Adobe Flash plugin installed and that it\'s currently up to date.');
 }
 
 // Callback for SWFObject
@@ -104,24 +104,23 @@ FlashSocket.prototype.onSocket = function(e) {
 	// Clear the timer.
 	clearTimeout(this.decaf.timer);
 	
-	if ( e.success ) {
+	if (e.success) {
 		// Successful! Store a reference to this Flash socket. We have to wait
 		// for Flash to start communicating now though.
 		FlashSocket.sockets[e.id] = this;
 		this.socket = e.ref;
-		//this.decaf.socketReady();
 		
 	} else {
 		// Not successful. Check Flash player version.
 		if ( ! swfobject.hasFlashPlayerVersion('9.0.0') ) {
 			var ver = swfobject.getFlashPlayerVersion();
 			if ( ver.major === 0 ) {
-				this.decaf.error('DecafMUD\'s Flash connectivity requires Adobe Flash 9 or later. Please <a href="http://get.adobe.com/flashplayer/">install</a> Flash.'.tr(this.decaf));
+				this.decaf.error('DecafMUD\'s Flash connectivity requires Adobe Flash 9 or later. Please <a href="http://get.adobe.com/flashplayer/">install</a> Flash.');
 			} else {
-				this.decaf.error("DecafMUD's Flash connectivity requires at least Adobe Flash version 9.0. You have version {0}.{1}.{2}. Please <a href=\"http://get.adobe.com/flashplayer/\">upgrade</a> your Flash plugin.".tr(this.decaf,ver.major,ver.minor,ver.release));
+				this.decaf.error("DecafMUD's Flash connectivity requires at least Adobe Flash version 9.0. You have version {0}.{1}.{2}. Please <a href=\"http://get.adobe.com/flashplayer/\">upgrade</a> your Flash plugin.".tr(ver.major,ver.minor,ver.release));
 			}
 		} else {
-			this.decaf.error("There was an unknown error (though most likely a 404) loading the Flash socket file.".tr(this.decaf));
+			this.decaf.error("There was an unknown error (though most likely a 404) loading the Flash socket file.");
 		}
 	}
 }
@@ -226,7 +225,7 @@ FlashSocket.executeCallback = function(id, type, data, data2) {
 	}
 	
 	else {
-		sock.decaf.debugString('Unknown Flash Callback: type={0} data="{1} data2="{2}"'.tr(sock.decaf, type, data, data2));
+		sock.decaf.debugString('Unknown Flash Callback: type={0} data="{1} data2="{2}"'.tr(type, data, data2));
 	}
 }
 

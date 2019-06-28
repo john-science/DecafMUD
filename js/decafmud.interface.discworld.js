@@ -101,7 +101,7 @@ var SimpleInterface = function(decaf) {
 	// Make the input element.
 	this.input = document.createElement('input');
 	this.input.id = "inputelement";
-	this.input.title = "MUD Input".tr(this.decaf);
+	this.input.title = "MUD Input";
 	this.input.type = 'text';
 	this.input.className = 'decafmud input';
 	this._input.insertBefore(this.input, this._input.firstChild);
@@ -169,7 +169,7 @@ SimpleInterface.supports = {
  *    display. */
 SimpleInterface.prototype.initSplash = function(percentage,message) {
 	if ( percentage === undefined ) { percentage = 0; }
-	if ( message === undefined ) { message = 'Discombobulating interface recipient...'.tr(this.decaf); }
+	if ( message === undefined ) { message = 'Discombobulating interface recipient...'; }
 	
 	// Disable scrolling
 	this.old_y = this.el_display.style.overflowY;
@@ -189,7 +189,7 @@ SimpleInterface.prototype.initSplash = function(percentage,message) {
 	this.splash_pg.setAttribute('aria-valuemax', 100);
 	this.splash_pg.setAttribute('aria-valuemin', 0);
 	this.splash_pg.setAttribute('aria-valuenow', percentage);
-	this.splash_pg.setAttribute('aria-valuetext', '{0}%'.tr(this.decaf,percentage));
+	this.splash_pg.setAttribute('aria-valuetext', '{0}%'.tr(percentage));
 	
 	this.splash_pgi = document.createElement('div');
 	this.splash_pgi.className = 'decafmud inner-progress';
@@ -198,7 +198,7 @@ SimpleInterface.prototype.initSplash = function(percentage,message) {
 	
 	this.splash_pgt = document.createElement('div');
 	this.splash_pgt.className = 'decafmud progress-text';
-	this.splash_pgt.innerHTML = '{0}%'.tr(this.decaf,percentage);
+	this.splash_pgt.innerHTML = '{0}%'.tr(percentage);
 	this.splash_pg.appendChild(this.splash_pgt);
 	
 	this.splash.appendChild(this.splash_pg);
@@ -238,7 +238,7 @@ SimpleInterface.prototype.endSplash = function() {
 SimpleInterface.prototype.updateSplash = function(percentage,message) {
 	if ( this.splash === null || this.splash_err ) { return; }
 	if ( percentage !== undefined ) {
-		var t = '{0}%'.tr(this.decaf, percentage);
+		var t = '{0}%'.tr(percentage);
 		this.splash_pg.setAttribute('aria-valuenow', percentage);
 		this.splash_pg.setAttribute('aria-valuetext', t);
 		
@@ -292,7 +292,7 @@ SimpleInterface.prototype.showSize = function() {
 	
 	var sz = this.display.getSize();
 	this.sizeel.style.cssText = 'opacity:1';
-	this.sizeel.innerHTML = "{0}x{1}".tr(this.decaf, sz[0], sz[1]);
+	this.sizeel.innerHTML = "{0}x{1}".tr(sz[0], sz[1]);
 	
 	// Set a timer for hiding.
 	var si = this;
@@ -337,7 +337,7 @@ SimpleInterface.prototype.print_msg = function(txt) {
 
 /** Called by Decaf upon connection to let us know. */
 SimpleInterface.prototype.connected = function() {
-	this.updateIcon(this.ico_connected, "DecafMUD is currently connected.".tr(this.decaf),
+	this.updateIcon(this.ico_connected, "DecafMUD is currently connected.",
 		'', 'connectivity connected');
 }
 
@@ -361,7 +361,7 @@ SimpleInterface.prototype.connecting = function() {
 	  "instead.</span>");
   }
   this.updateIcon(this.ico_connected,
-				  "DecafMUD is attempting to connect.".tr(this.decaf),
+				  "DecafMUD is attempting to connect.",
 				  '', 'connectivity connecting');
 }
 
@@ -369,7 +369,7 @@ SimpleInterface.prototype.connecting = function() {
 SimpleInterface.prototype.disconnected = function() {
   this.print_msg("Connection closed.");
   this.updateIcon(this.ico_connected,
-				  "DecafMUD is currently not connected.".tr(this.decaf),
+				  "DecafMUD is currently not connected.",
 				  '', 'connectivity disconnected');
 }
 
@@ -430,10 +430,9 @@ SimpleInterface.prototype.setup = function() {
 	for (i = 0; i < menus.length; i+=3) {
 		this.tbNew(
 			menus[i],
-			menus[i+1].tr(this.decaf),
+			menus[i+1],
 			undefined,
 			undefined,
-//			menus[i+2].tr(this.decaf),
 			1,
 			true,
 			false,
@@ -443,7 +442,7 @@ SimpleInterface.prototype.setup = function() {
 	}
 
 	// Create the connected notification icon.
-	this.ico_connected = this.addIcon("You are currently disconnected.".tr(this.decaf), '', 'connectivity disconnected');
+	this.ico_connected = this.addIcon("You are currently disconnected.", '', 'connectivity disconnected');
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -652,7 +651,7 @@ SimpleInterface.prototype.showScrollButton = function() {
 	var sb = document.createElement('div'), si = this;
 	sb.className = 'button scroll-button';
 	sb.setAttribute('tabIndex',0);
-	sb.innerHTML = "More".tr(this.decaf);
+	sb.innerHTML = "More";
 	var helper = function(e) {
 		if ( e.type == 'keydown' && e.keyCode !== 13 ) { return; }
 		si.display.scrollNew(); }

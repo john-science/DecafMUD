@@ -1,4 +1,3 @@
-
 /**
  * @fileOverview DecafMUD TELOPT Handler: GMCP
  */
@@ -115,12 +114,12 @@ GMCP.prototype.packages.Core = {
 	'Ping' : function(data) {
 		var n = new Date() - this.pingWhen;
 		this.pingCount++;
-		this.pingAverage = Math.ceil((n + (this.pingAverage * (this.pingCount-1))) / this.pingCount);
-		console.debug('PING: {0}ms over {1} pings'.tr(this.decaf,this.pingAverage,this.pingCount));
+		this.pingAverage = Math.ceil((n + (this.pingAverage * (this.pingCount - 1))) / this.pingCount);
+		console.debug('PING: {0}ms over {1} pings'.tr(this.pingAverage, this.pingCount));
 	},
 
 	'Goodbye' : function(data) {
-		this.decaf.debugString('Reason for disconnect: {0}'.tr(this.decaf,data));
+		this.decaf.debugString('Reason for disconnect: {0}'.tr(data));
 	}
 };
 

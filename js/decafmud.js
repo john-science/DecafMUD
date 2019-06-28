@@ -126,12 +126,6 @@ var DecafMUD = function DecafMUD(options) {
 	this.inbuf = [];
 	this.telopt = {};
 	
-	// If language is set to autodetect, then detect it.
-	if ( this.options.language === 'autodetect' ) {
-		var lang = navigator.language ? navigator.language : navigator.userLanguage;
-		this.options.language =lang.split('-',1)[0];
-	}
-	
 	// Increment DecafMUD.last_id and use that as this instance's ID.
 	this.id = ( ++DecafMUD.last_id );
 	
@@ -148,9 +142,7 @@ var DecafMUD = function DecafMUD(options) {
 		console.groupEnd();
 	}
 	
-	// Require the language first, then the UI.
-	if ( this.options.language !== 'en' && this.options.load_language  ) {
-		this.require('decafmud.language.'+this.options.language); }
+	// Require the UI
 	this.require('decafmud.interface.'+this.options.interface);
 	
 	// Load those. After that, chain to the initSplash function.
@@ -218,10 +210,6 @@ DecafMUD.plugins = {
 	/** These plugins provide user interfaces for the client.
 	 * @type Object */
 	Interface	: {},
-	
-	/** These plugins provide translations to other languages.
-	 * @type Object */
-	Language	: {},
 	
 	/** These plugins provide sockets for network connectivity, a must for a
 	 *  mud client.
@@ -889,28 +877,16 @@ DecafMUD.plugins.Telopt[t.BINARY] = true;
 DecafMUD.plugins.Telopt[t.MSSP] = 'console' in window;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Localization
+// String replacements
 ///////////////////////////////////////////////////////////////////////////////
-// Extend the string prototype with a new function for easy localization of
-// our strings. Usage: alert( "This is an example.".tr(decaf_instance) );
+// Extend the string prototype with a new function for easy string replacement.
+// Usage: alert("This is an {0}.".tr("example"));
 if ( String.prototype.tr === undefined ) {
-	// Set this to true if you want to write to the debugging log every time
-	// we try translating a string with no available translation.
-	/** If this is true, debugging messages will be written to the console
-	 *  every time .tr() is called on a string with no available translation
-	 *  in the target language.
-	 * @default "false"
-	 * @constant */
-	String.logNonTranslated = 'console' in window;
-	/** Translate a string from English to a different language, optionally
-	 *  replacing special character sequences with the provided variables.
+	/** Replace special character sequences with the provided variables.
 	 *
 	 * @example
-	 * alert( "This is a {0}.".tr(decaf, "test") );
+	 * alert("This is a {0}.".tr("test"));
 	 *
-	 * @param {DecafMUD} [decaf] Use the language set in this instance of
-	 *    DecafMUD if set. If not set, use the language of the most recently
-	 *    created DecafMUD instance.
 	 * @param {Object} [obj] If an object is provided, variables will be
 	 *    replaced in the string based upon the object's keys.
 	 * @example
@@ -929,50 +905,29 @@ if ( String.prototype.tr === undefined ) {
 	 * @returns {String} The translated text.
 	 */
 	String.prototype.tr = function() {
-		var decaf, off, s, lang;
-		if ( arguments.length > 0 && arguments[0] instanceof DecafMUD ) {
-			decaf = arguments[0];
-			off = 1;
-		} else {
-			// Since an instance wasn't specified, assume the latest instance.
-			decaf = DecafMUD.instances[DecafMUD.instances.length - 1];
-			off = 0;
+		var s = this;
+		if ( arguments.length === 0 ) {
+			return s;
 		}
-		
-		// Get the language from our DecafMUD instance, then try getting the
-		// translated string.
-		lang = decaf.options.language;
-		if ( lang === 'en' ) { s = this; }
-		else {
-			if (!( DecafMUD.plugins.Language[lang] && (s = DecafMUD.plugins.Language[lang][this]) )) {
-				if ( String.logNonTranslated ) {
-					var l = DecafMUD.plugins.Language[lang] && DecafMUD.plugins.Language[lang]['English'] !== undefined ?
-						DecafMUD.plugins.Language[lang]['English'] : '"' + lang + '"';
-					console.warn('DecafMUD[' + decaf.id + '] i18n: No ' + l + ' translation for: ' +
-						this.replace(/\n/g,'\\n'));
-				}
-				s = this;
-			}
-		}
-		
-		// Do replacements to make this even more useful.
-		if ( arguments.length - off === 1 && typeof arguments[off] === 'object' ) {
-			var obj = arguments[off];
-			for ( var i in obj ) {
-				s = s.replace('{'+i+'}', obj[i]);
+
+		// Do replacements
+		var obj = arguments;
+		if (typeof obj[0] === 'object') {
+			for (var i in obj) {
+				s = s.replace('{' + i + '}', obj[i]);
 			}
 		} else {
-			var obj = arguments;
 			s = s.replace(/{(\d+)}/g, function(m) {
-				var p = parseInt(m[1]) + off;
+				var p = parseInt(m[1]);
 				return p < obj.length ? obj[p] : '';
 			});
 		}
-		
-		// Return the fancy, translated, replaced string.
+       
+		// Return the replaced string.
 		return s;
 	}
 }
+
 
 /** Display a dialog with About information for DecafMUD. */
 DecafMUD.prototype.about = function() {
@@ -986,7 +941,7 @@ DecafMUD.prototype.about = function() {
 		" and free to use and modify!");
 	
 	// Show the about dialog with a simple alert.
-	alert(abt.join('\n').tr(this, DecafMUD.version.toString()));
+	alert(abt.join('\n').tr(DecafMUD.version.toString()));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1016,7 +971,7 @@ DecafMUD.prototype.debugString = function(text, type, obj) {
 	
 	// Prepare the string. It's almost certain it won't be translatable, but
 	// the variable replacement is nice.
-	if (obj !== undefined) {text = text.tr(this, obj);}
+	if (obj !== undefined) {text = text.tr(obj);}
 	
 	// Firebug / Console Logging
 	if (!('console' in window)) {return;}
@@ -1050,7 +1005,7 @@ DecafMUD.prototype.error = function(text) {
 	if ( this.ui && this.ui.splashError(text) ) { return; }
 	
 	// TODO: Check the Interface and stuff
-	alert("DecafMUD Error\n\n{0}".tr(this,text));
+	alert("DecafMUD Error\n\n{0}".tr(text));
 }
 
 DecafMUD.prototype.noFlash = function() {
@@ -1116,14 +1071,6 @@ DecafMUD.prototype.loadScript = function(filename, path) {
  *    return 'SomeRequirement' in window;
  * }); */
 DecafMUD.prototype.require = function(module, check) {
-	// If we're loading language files, try it.
-	if ( this.options.load_language && this.options.language !== 'en' &&
-		 module.indexOf('language') === -1 && module.indexOf('decafmud') !== -1 ) {
-		var parts = module.split('.');
-		parts.splice(1,0,"language",this.options.language);
-		this.require(parts.join('.'));
-	}
-	
 	if ( check === undefined ) {
 		// Build a checker
 		if ( module.toLowerCase().indexOf('decafmud') === 0 ) {
@@ -1185,7 +1132,7 @@ DecafMUD.prototype.waitLoad = function(next, itemloaded, tr) {
 	if ( tr === undefined ) { tr = 0; }
 	else if ( tr > this.options.wait_tries ) {
 		if ( this.need[0][0].indexOf('language') === -1 ) {
-			this.error("Timed out attempting to load the module: {0}".tr(this, this.need[0][0]));
+			this.error("Timed out attempting to load the module: {0}".tr(this.need[0][0]));
 			return;
 		} else {
 			if ( itemloaded !== undefined ) {
@@ -1238,7 +1185,7 @@ DecafMUD.prototype.waitLoad = function(next, itemloaded, tr) {
 DecafMUD.prototype.initSplash = function() {
 	// Create the UI if we're using one. Which we always should be.
 	if ( this.options.interface !== undefined ) {
-		this.debugString('Attempting to initialize the interface plugin "{0}".'.tr(this,this.options.interface));
+		this.debugString('Attempting to initialize the interface plugin "{0}".'.tr(this.options.interface));
 		this.ui = new DecafMUD.plugins.Interface[this.options.interface](this);
 		this.ui.initSplash();
 	}
@@ -1270,12 +1217,12 @@ DecafMUD.prototype.updateSplash = function(module,next_mod,perc) {
 	} else if ( next_mod !== undefined ) {
 		if ( next_mod.indexOf('decafmud') === 0 ) {
 			var parts = next_mod.split('.');
-			next_mod = 'Loading the {0} module "{1}"...'.tr(this, parts[1],parts[2]);
+			next_mod = 'Loading the {0} module "{1}"...'.tr(parts[1], parts[2]);
 		} else {
-			next_mod = 'Loading: {0}'.tr(this,next_mod);
+			next_mod = 'Loading: {0}'.tr(next_mod);
 		}
 	} else if ( perc == 100 ) {
-		next_mod = "Loading complete.".tr(this);
+		next_mod = "Loading complete.";
 	}
 	
 	this.ui.updateSplash(perc, next_mod);
@@ -1291,14 +1238,14 @@ DecafMUD.prototype.initSocket = function() {
 	if ( this.ui ) {
 		// Push a junk element to need so the status bar shows properly.
 		this.need.push('.');
-		this.updateSplash(true,"Initializing the user interface...".tr(this));
+		this.updateSplash(true,"Initializing the user interface...");
 		
 		// Set up the UI.
 		this.ui.load();
 	}
 	
 	// Attempt to create the socket.
-	this.debugString('Creating a socket using the "{0}" plugin.'.tr(this,this.options.socket));
+	this.debugString('Creating a socket using the "{0}" plugin.'.tr(this.options.socket));
 	this.socket = new DecafMUD.plugins.Socket[this.options.socket](this);
 	this.socket.setup(0);
 	
@@ -1349,7 +1296,7 @@ DecafMUD.prototype.initFinal = function() {
 			'to <a href="http://www.google.com/chrome">Google Chrome</a> or ' +
 			'<a href="http://www.getfirefox.com">Mozilla Firefox</a> for ' +
 			'the best experience.';
-		this.ui.infoBar(msg.tr(this));
+		this.ui.infoBar(msg);
 	}
 
         this.ui.display.message("If this program is failing to connect, "+
@@ -1425,7 +1372,7 @@ DecafMUD.prototype.socketConnected = function() {
 	// Get the host and stuff.
 	var host = this.socket.host, port = this.socket.port;
 	
-	this.debugString("The socket has connected successfully to {0}:{1}.".tr(this,host,port),"info");
+	this.debugString("The socket has connected successfully to {0}:{1}.".tr(host, port), "info");
 	
 	// Call telopt connected code.
 	for(var k in this.telopt) {
@@ -1477,11 +1424,11 @@ DecafMUD.prototype.socketClosed = function() {
 			// Show a reconnect infobar
 			var s = this.options.reconnect_delay / 1000;
 			if ( this.ui && this.ui.immediateInfoBar && s >= 0.25 ) {
-				this.ui.immediateInfoBar("You have been disconnected. Reconnecting in {0} second{1}...".tr(this, s, (s === 1 ? '' : 's')),
+				this.ui.immediateInfoBar("You have been disconnected. Reconnecting in {0} second{1}...".tr(s, (s === 1 ? '' : 's')),
 					'reconnecting',
 					s,
 					undefined,
-					[['Reconnect Now'.tr(this),function(){ clearTimeout(d.timer); d.socket.connect(); }]],
+					[['Reconnect Now',function(){ clearTimeout(d.timer); d.socket.connect(); }]],
 					undefined,
 					function(){ clearTimeout(d.timer);  }
 				); }
@@ -1514,7 +1461,7 @@ DecafMUD.prototype.socketData = function(data) {
 
 /** Called by the socket when there's an error. */
 DecafMUD.prototype.socketError = function(data,data2) {
-	this.debugString('Socket Err: {0}  d2="{1}"'.tr(this,data,data2),'error');
+	this.debugString('Socket Err: {0}  d2="{1}"'.tr(data, data2),'error');
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1761,7 +1708,7 @@ DecafMUD.prototype.requestPermission = function(option, prompt, callback) {
 	// First, check for infobars in the UI. That's preferred.
 	if ( this.ui && this.ui.infoBar ) {
 		this.ui.infoBar(prompt, 'permission', 0, undefined,
-			[['Allow'.tr(this), help_allow], ['Deny'.tr(this), help_deny]], undefined, closer);
+			[['Allow', help_allow], ['Deny', help_deny]], undefined, closer);
 		return; }
 	
 }
@@ -1802,13 +1749,11 @@ DecafMUD.options = {
 	encoding		: 'iso88591',
 	socket			: 'flash',
 	interface		: 'discworld',
-	language		: 'autodetect',
 	
 	// Loading Settings
 	jslocation		: undefined, // undefined = This script's location
 	wait_delay		: 25,
 	wait_tries		: 1000,
-	load_language	: false,
 	plugins			: [],
 	
 	// Storage Settings
