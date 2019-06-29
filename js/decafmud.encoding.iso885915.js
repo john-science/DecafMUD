@@ -1,4 +1,3 @@
-
  /**
  * @fileOverview DecafMUD Character Encoding: ISO-8859-15
  */

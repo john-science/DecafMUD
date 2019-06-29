@@ -58,18 +58,18 @@ var SimpleInterface = function(decaf) {
 	this.el_display.setAttribute('tabIndex','0');
 	this.container.appendChild(this.el_display);
 		
-		// Make the sidebar
-		this.sidebar = document.createElement('div');
-		this.sidebar.className = 'decafmud mud-pane side-pane';
-		this.sidebar.setAttribute('tabIndex', '1');
-		this.container.appendChild(this.sidebar);
-		this.progresstable = document.createElement('table');
-		this.progresstable.style.display = 'none';
-		this.sidebar.appendChild(this.progresstable);
-		this.progressbars = new Array();
-		this.mapdiv = document.createElement('div');
-		this.mapdiv.style.display = 'none';
-		this.sidebar.appendChild(this.mapdiv);
+	// Make the sidebar
+	this.sidebar = document.createElement('div');
+	this.sidebar.className = 'decafmud mud-pane side-pane';
+	this.sidebar.setAttribute('tabIndex', '1');
+	this.container.appendChild(this.sidebar);
+	this.progresstable = document.createElement('table');
+	this.progresstable.style.display = 'none';
+	this.sidebar.appendChild(this.progresstable);
+	this.progressbars = new Array();
+	this.mapdiv = document.createElement('div');
+	this.mapdiv.style.display = 'none';
+	this.sidebar.appendChild(this.mapdiv);
 		
 	// Handle keypresses in scrollback.
 	addEvent(this.el_display,'keydown',function(e){si.displayKey(e)});
@@ -114,24 +114,25 @@ var SimpleInterface = function(decaf) {
 	addEvent(this.input, 'blur', helper);
 	addEvent(this.input, 'focus', helper);
 
-		// remember a limited history; historyPosition is -1 unless
-		// the user is browsing through history (so the moment the
-		// input field changes, historyposition oes back to 0
-		this.history = [];
-		this.historyPosition = -1;
-		for (i = 0; i < 100; i++) this.history[i] = '';
+	// remember a limited history; historyPosition is -1 unless
+	// the user is browsing through history (so the moment the
+	// input field changes, historyposition oes back to 0
+	this.history = [];
+	this.historyPosition = -1;
+	for (i = 0; i < 100; i++) this.history[i] = '';
 
 	// Reset the interface state.
 	this.reset();
-	
+
 	// Listen to window resizing
 	addEvent(window,'resize',function() { si.resizeScreen(); });
 
-		// Make sure the input is focussed
-		this.input.focus();
-	
+	// Make sure the input is focussed
+	this.input.focus();
+
 	return this;
 };
+
 SimpleInterface.prototype.toString = function() {
 	return '<DecafMUD Interface: Simple' + (this.container.id ? ' (#'+this.container.id+')' : '') + '>'; }
 
@@ -243,7 +244,7 @@ SimpleInterface.prototype.updateSplash = function(percentage,message) {
 		this.splash_pg.setAttribute('aria-valuetext', t);
 		
 		this.splash_pgt.innerHTML = t;
-		this.splash_pgi.style.cssText = 'width:'+percentage+'%;';
+		this.splash_pgi.style.cssText = 'width:' + percentage + '%;';
 	}
 	if (! message) { return; }
 	

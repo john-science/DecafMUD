@@ -30,7 +30,11 @@ then
 fi
 
 # Compile the JS and move it into place.
-java -jar closure-compiler-${JS_VERSION}.jar js/disc.settings.js js/dragelement.js js/disc.menu.js js/disc.macro.js js/disc.zmp.js js/decafmud.js js/decafmud.encoding.cp437.js -O BUNDLE --js_output_file=compiled/main.js
+java -jar closure-compiler-${JS_VERSION}.jar js/disc.settings.js js/dragelement.js js/disc.menu.js js/disc.macro.js js/disc.zmp.js js/decafmud.js js/decafmud.storage.standard.js js/decafmud.interface.discworld.js -O BUNDLE --js_output_file=compiled/main.js
+java -jar closure-compiler-${JS_VERSION}.jar js/decafmud.encoding.cp437.js -O BUNDLE --js_output_file=compiled/decafmud.encoding.cp437.js
+java -jar closure-compiler-${JS_VERSION}.jar js/decafmud.encoding.iso885915.js -O BUNDLE --js_output_file=compiled/decafmud.encoding.iso885915.js
+
+# TODO: move encoding/socker/other JS files that other users may need to download
 
 # If it is not already present, grab the CSS minifier.
 if [ ! -f closure-stylesheets.${CSS_VERSION}.jar ]

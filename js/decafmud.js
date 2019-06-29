@@ -128,26 +128,23 @@ var DecafMUD = function DecafMUD(options) {
 	
 	// Increment DecafMUD.last_id and use that as this instance's ID.
 	this.id = ( ++DecafMUD.last_id );
-	
+
 	// Store this instance for easy retrieval.
 	DecafMUD.instances.push(this);
-	
+
 	// Start doing debug stuff.
 	this.debugString('Created new instance.', 'info');
-	
+
 	// If we have console grouping, log the options.
 	if ( 'console' in window && console.groupCollapsed ) {
 		console.groupCollapsed('DecafMUD['+this.id+'] Provided Options');
 		console.dir(this.options);
 		console.groupEnd();
 	}
-	
-	// Require the UI
-	this.require('decafmud.interface.'+this.options.interface);
-	
+
 	// Load those. After that, chain to the initSplash function.
 	this.waitLoad(this.initSplash);
-	
+
 	return this;
 };
 
@@ -1195,7 +1192,6 @@ DecafMUD.prototype.initSplash = function() {
 	this.extra = 3;
 	
 	// Require plugins for: storage, socket, encoding, triggers, telopt
-	this.require('decafmud.storage.'+this.options.storage);
 	this.require('decafmud.socket.'+this.options.socket);
 	this.require('decafmud.encoding.'+this.options.encoding);
 	
@@ -1232,7 +1228,7 @@ DecafMUD.prototype.updateSplash = function(module,next_mod,perc) {
 DecafMUD.prototype.initSocket = function() {
 	this.extra = 1;
 	// Create the master storage object.
-	this.store = new DecafMUD.plugins.Storage[this.options.storage](this);
+	this.store = new DecafMUD.plugins.Storage["standard"](this);
 	this.storage = this.store;
 	
 	if ( this.ui ) {
@@ -1261,8 +1257,8 @@ DecafMUD.prototype.initUI = function() {
 	
 	// Now, require all our plugins.
 	for(var i=0; i<this.options.plugins.length; i++) {
-		this.require('decafmud.'+this.options.plugins[i]); }
-	
+		this.require('decafmud.' + this.options.plugins[i]); }
+
 	this.waitLoad(this.initFinal, this.updateSplash);
 }
 
@@ -1742,25 +1738,19 @@ DecafMUD.options = {
 	connect_timeout : 5000,
 	reconnect_delay	: 5000,
 	reconnect_tries	: 3,
-	
+
 	// Plugins to use
-	storage			: 'standard',
 	display			: 'standard',
 	encoding		: 'iso88591',
 	socket			: 'flash',
 	interface		: 'discworld',
-	
+
 	// Loading Settings
 	jslocation		: undefined, // undefined = This script's location
 	wait_delay		: 25,
 	wait_tries		: 1000,
 	plugins			: [],
-	
-	// Storage Settings
-	set_storage		: {
-		// There are no settings. Yet.
-	},
-	
+
 	// Display Settings
 	set_display		: {
 		handlecolor	: true,
@@ -1770,7 +1760,7 @@ DecafMUD.options = {
 		inputfg		: '-7',
 		inputbg		: '-0'
 	},
-	
+
 	// Socket Settings
 	set_socket		: {
 		// Flash Specific
